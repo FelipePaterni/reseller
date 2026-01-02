@@ -1,0 +1,1 @@
+* [] em `lib/src/app/app_widget.dart` fazer a padronização do widget principal do aplicativo conforme as diretrizes de desenvolvimento do Reseller App. Seguindo as instruições presenstes nos comentarios do arquivo.
