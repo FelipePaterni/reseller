@@ -15,59 +15,47 @@ class IngredientsProvider with ChangeNotifier {
 
   Ingredient getByIndex(int index) => _ingredients.values.elementAt(index);
 
-  void put(Ingredient ingredient) {
+  /// Update existing ingredient or create new one
+  void update(Ingredient ingredient) {
     if (ingredient.id != null &&
         ingredient.id!.isNotEmpty &&
         _ingredients.containsKey(ingredient.id)) {
-      // Update existing ingredient
       _ingredients[ingredient.id!] = ingredient;
-    } else {
-      // Add new ingredient
-      final id = Random().nextDouble().toString();
-      _ingredients[id] = Ingredient(
-        id: id,
-        name: ingredient.name,
-        quantity: ingredient.quantity,
-        unitLabel: ingredient.unitLabel,
-        costPerUnit: ingredient.costPerUnit,
-        totalCost: ingredient.totalCost,
-      );
-    }
-
-    final id = Random().nextDouble().toString();
-    _ingredients.putIfAbsent(
-      id,
-      () => Ingredient(
-        id: id,
-        name: ingredient.name,
-        quantity: ingredient.quantity,
-        unitLabel: ingredient.unitLabel,
-        costPerUnit: ingredient.costPerUnit,
-        totalCost: ingredient.totalCost,
-      ),
-    );
-
-    notifyListeners();
-  }
-
-  /*
-
-  void addIngredient(Ingredient ingredient) {
-    _ingredients[ingredient.id] = ingredient;
-    notifyListeners();
-  }
-
-  void updateIngredient(Ingredient ingredient) {
-    if (_ingredients.containsKey(ingredient.id)) {
-      _ingredients[ingredient.id] = ingredient;
       notifyListeners();
+    } else {
+      create(ingredient);
     }
   }
 
-  void removeIngredient(String id) {
+  /// Delete ingredient by ID
+  void deleteById(String id) {
     if (_ingredients.containsKey(id)) {
       _ingredients.remove(id);
       notifyListeners();
     }
-  }*/
+  }
+
+  /// Delete ingredient by object
+  void deleteByObject(Ingredient ingredient) {
+    if (ingredient.id != null &&
+        ingredient.id!.isNotEmpty &&
+        _ingredients.containsKey(ingredient.id)) {
+      _ingredients.remove(ingredient.id);
+      notifyListeners();
+    }
+  }
+
+  /// Add new ingredient
+  void create(Ingredient ingredient) {
+    final id = Random().nextDouble().toString();
+    _ingredients[id] = Ingredient(
+      id: id,
+      name: ingredient.name,
+      quantity: ingredient.quantity,
+      unitLabel: ingredient.unitLabel,
+      costPerUnit: ingredient.costPerUnit,
+      totalCost: ingredient.totalCost,
+    );
+    notifyListeners();
+  }
 }
