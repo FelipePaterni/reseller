@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:reseller/src/app/router/routes.dart';
+import 'package:reseller/src/core/mocks/recipe_mock.dart';
 import 'package:reseller/src/modules/recipes/domain/entities/recipe.dart';
 import 'package:reseller/src/modules/recipes/presentation/widgets/card_recipe.dart';
 
 class RecipeList extends StatelessWidget {
   const RecipeList({super.key});
 
-  static const List<Recipe> recipes = [];
+  static final List<Recipe> recipes = RECIPES_MOCK.values.toList();
 
   @override
   Widget build(BuildContext context) {

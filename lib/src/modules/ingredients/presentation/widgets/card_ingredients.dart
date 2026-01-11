@@ -3,8 +3,7 @@ import 'package:reseller/src/modules/ingredients/domain/entities/ingredient.dart
 
 class CardIngredients extends StatelessWidget {
   final Ingredient ingredient;
-  final Function? onTap;
-
+  final VoidCallback? onTap;
   const CardIngredients({super.key, required this.ingredient, this.onTap});
 
   @override
