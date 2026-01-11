@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:reseller/src/modules/ingredients/domain/entities/ingredients.dart';
+import 'package:reseller/src/modules/ingredients/domain/entities/ingredient.dart';
 import 'package:reseller/src/modules/ingredients/presentation/widgets/card_ingredients.dart';
 import 'package:reseller/src/modules/ingredients/presentation/widgets/ingredient_edit_sheet.dart';
 
 class IngredientList extends StatelessWidget {
   const IngredientList({super.key});
+
+  static const List<Ingredient> ingredients = [];
 
   void _openEditModal(BuildContext context, Ingredient ingredient) {
     showModalBottomSheet<Ingredient>(
@@ -25,17 +27,9 @@ class IngredientList extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8),
         child: ListView.builder(
-          itemCount: 1,
+          itemCount: ingredients.length,
           itemBuilder: (context, index) {
-            final ingredient = Ingredient(
-              id: '1',
-              title: 'Tomato',
-              quantity: 10,
-              totalCost: 25.0,
-              costPerUnitLabel: 'kg',
-              costPerUnit: 2.5,
-            );
-
+            final ingredient = ingredients[index];
             return CardIngredients(
               ingredient: ingredient,
               onTap: () => _openEditModal(context, ingredient),

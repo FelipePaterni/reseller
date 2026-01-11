@@ -6,68 +6,7 @@ import 'package:reseller/src/modules/recipes/presentation/widgets/card_recipe.da
 class RecipeList extends StatelessWidget {
   const RecipeList({super.key});
 
-  static const List<Recipe> recipes = [
-    Recipe(
-      icon: Icons.fastfood,
-      title: 'Delicious Recipe',
-      description:
-          'This is a very delicious recipe that you will love to cook and eat.',
-    ),
-    Recipe(
-      icon: Icons.fastfood,
-      title: 'Delicious Recipe',
-      description:
-          'This is a very delicious recipe that you will love to cook and eat.',
-    ),
-    Recipe(
-      icon: Icons.fastfood,
-      title: 'Delicious Recipe',
-      description:
-          'This is a very delicious recipe that you will love to cook and eat.',
-    ),
-    Recipe(
-      icon: Icons.fastfood,
-      title: 'Delicious Recipe',
-      description:
-          'This is a very delicious recipe that you will love to cook and eat.',
-    ),
-    Recipe(
-      icon: Icons.fastfood,
-      title: 'Delicious Recipe',
-      description:
-          'This is a very delicious recipe that you will love to cook and eat.',
-    ),
-    Recipe(
-      icon: Icons.fastfood,
-      title: 'Delicious Recipe',
-      description:
-          'This is a very delicious recipe that you will love to cook and eat.',
-    ),
-    Recipe(
-      icon: Icons.fastfood,
-      title: 'Delicious Recipe',
-      description:
-          'This is a very delicious recipe that you will love to cook and eat.',
-    ),
-    Recipe(
-      icon: Icons.fastfood,
-      title: 'Delicious Recipe',
-      description:
-          'This is a very delicious recipe that you will love to cook and eat.',
-    ),
-    Recipe(
-      icon: Icons.fastfood,
-      title: 'Delicious Recipe',
-      description:
-          'This is a very delicious recipe that you will love to cook and eat.',
-    ),
-    Recipe(
-      icon: Icons.fastfood,
-      title: 'Delicious Recipe',
-      description:
-          'This is a very delicious recipe that you will love to cook and eat.',
-    ),
-  ];
+  static const List<Recipe> recipes = [];
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +18,7 @@ class RecipeList extends StatelessWidget {
           return Padding(
             padding: const EdgeInsets.all(8.0),
             child: CardRecipe.icon(
-              icon: recipe.icon,
+              icon: recipe.icon ?? Icons.restaurant,
               title: recipe.title,
               content: recipe.description,
               onTap: () => Navigator.pushNamed(

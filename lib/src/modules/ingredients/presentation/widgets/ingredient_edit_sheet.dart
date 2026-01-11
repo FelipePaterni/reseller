@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:reseller/src/modules/ingredients/domain/entities/ingredients.dart';
+import 'package:reseller/src/modules/ingredients/domain/entities/ingredient.dart';
 
 class IngredientEditSheet extends StatefulWidget {
   final Ingredient ingredient;
@@ -23,14 +23,14 @@ class _IngredientEditSheetState extends State<IngredientEditSheet> {
   @override
   void initState() {
     super.initState();
-    _nameController = TextEditingController(text: widget.ingredient.title);
+    _nameController = TextEditingController(text: widget.ingredient.name);
     _quantityController = TextEditingController(
       text: widget.ingredient.quantity.toString(),
     );
     _totalCostController = TextEditingController(
       text: widget.ingredient.totalCost.toStringAsFixed(2),
     );
-    _selectedUnit = widget.ingredient.costPerUnitLabel;
+    _selectedUnit = widget.ingredient.unitLabel;
     _calculatedUnitCost = widget.ingredient.costPerUnit;
 
     _quantityController.addListener(_recalculateUnitCost);
@@ -60,8 +60,8 @@ class _IngredientEditSheetState extends State<IngredientEditSheet> {
   void _onSave() {
     final updated = Ingredient(
       id: widget.ingredient.id,
-      title: _nameController.text.trim().isEmpty
-          ? widget.ingredient.title
+      name: _nameController.text.trim().isEmpty
+          ? widget.ingredient.name
           : _nameController.text.trim(),
       quantity:
           double.tryParse(_quantityController.text) ??
@@ -69,7 +69,7 @@ class _IngredientEditSheetState extends State<IngredientEditSheet> {
       totalCost:
           double.tryParse(_totalCostController.text) ??
           widget.ingredient.totalCost,
-      costPerUnitLabel: _selectedUnit,
+      unitLabel: _selectedUnit,
       costPerUnit: _calculatedUnitCost > 0
           ? _calculatedUnitCost
           : widget.ingredient.costPerUnit,
