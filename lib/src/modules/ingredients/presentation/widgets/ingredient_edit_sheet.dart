@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:reseller/src/modules/ingredients/domain/entities/ingredient.dart';
 
 class IngredientEditSheet extends StatefulWidget {
@@ -11,72 +12,11 @@ class IngredientEditSheet extends StatefulWidget {
 }
 
 class _IngredientEditSheetState extends State<IngredientEditSheet> {
-  late final TextEditingController _nameController;
-  late final TextEditingController _quantityController;
-  late final TextEditingController _totalCostController;
+  final _formKey = GlobalKey<FormBuilderState>();
 
-  late String _selectedUnit;
-  late double _calculatedUnitCost;
+  late final double _calculatedUnitCost = 0.0;
 
   static const List<String> _unitOptions = <String>['kg', 'g', 'un', 'ml', 'l'];
-
-  @override
-  void initState() {
-    super.initState();
-    _nameController = TextEditingController(text: widget.ingredient.name);
-    _quantityController = TextEditingController(
-      text: widget.ingredient.quantity.toString(),
-    );
-    _totalCostController = TextEditingController(
-      text: widget.ingredient.totalCost.toStringAsFixed(2),
-    );
-    _selectedUnit = widget.ingredient.unitLabel;
-    _calculatedUnitCost = widget.ingredient.costPerUnit;
-
-    _quantityController.addListener(_recalculateUnitCost);
-    _totalCostController.addListener(_recalculateUnitCost);
-  }
-
-  @override
-  void dispose() {
-    _nameController.dispose();
-    _quantityController.dispose();
-    _totalCostController.dispose();
-    super.dispose();
-  }
-
-  void _recalculateUnitCost() {
-    final double quantity = double.tryParse(_quantityController.text) ?? 0;
-    final double totalCost = double.tryParse(_totalCostController.text) ?? 0;
-
-    if (quantity <= 0) {
-      setState(() => _calculatedUnitCost = 0);
-      return;
-    }
-
-    setState(() => _calculatedUnitCost = totalCost / quantity);
-  }
-
-  void _onSave() {
-    final updated = Ingredient(
-      id: widget.ingredient.id,
-      name: _nameController.text.trim().isEmpty
-          ? widget.ingredient.name
-          : _nameController.text.trim(),
-      quantity:
-          double.tryParse(_quantityController.text) ??
-          widget.ingredient.quantity,
-      totalCost:
-          double.tryParse(_totalCostController.text) ??
-          widget.ingredient.totalCost,
-      unitLabel: _selectedUnit,
-      costPerUnit: _calculatedUnitCost > 0
-          ? _calculatedUnitCost
-          : widget.ingredient.costPerUnit,
-    );
-
-    Navigator.of(context).pop(updated);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -90,157 +30,160 @@ class _IngredientEditSheetState extends State<IngredientEditSheet> {
         top: 24,
         bottom: MediaQuery.of(context).viewInsets.bottom + 24,
       ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Row(
-            children: [
-              Text(
-                'Editar Ingrediente',
-                style: theme.textTheme.titleMedium?.copyWith(
-                  color: colorScheme.onSurface,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-              const Spacer(),
-              IconButton(
-                onPressed: () => Navigator.of(context).maybePop(),
-                icon: Icon(Icons.close, color: colorScheme.onSurfaceVariant),
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          TextField(
-            controller: _nameController,
-            decoration: const InputDecoration(
-              labelText: 'Nome do ingrediente',
-              hintText: 'Ex: Chocolate em Pó',
-            ),
-          ),
-          const SizedBox(height: 16),
-          Row(
-            children: [
-              Expanded(
-                child: TextField(
-                  controller: _quantityController,
-                  keyboardType: const TextInputType.numberWithOptions(
-                    decimal: true,
-                  ),
-                  decoration: const InputDecoration(
-                    labelText: 'Quantidade comprada',
-                    hintText: '0',
-                  ),
-                ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: DropdownButtonFormField<String>(
-                  initialValue: _selectedUnit,
-                  decoration: const InputDecoration(
-                    labelText: 'Unidade de medida',
-                  ),
-                  items: _unitOptions
-                      .map(
-                        (unit) => DropdownMenuItem<String>(
-                          value: unit,
-                          child: Text(unit.toUpperCase()),
-                        ),
-                      )
-                      .toList(),
-                  onChanged: (value) {
-                    if (value == null) return;
-                    setState(() => _selectedUnit = value);
-                  },
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          TextField(
-            controller: _totalCostController,
-            keyboardType: const TextInputType.numberWithOptions(decimal: true),
-            decoration: const InputDecoration(
-              labelText: 'Preço total da compra',
-              hintText: "R\$ 0,00",
-            ),
-          ),
-          const SizedBox(height: 16),
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-            decoration: BoxDecoration(
-              color: colorScheme.surfaceContainerHighest,
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: colorScheme.outlineVariant),
-            ),
-            child: Row(
+      child: FormBuilder(
+        key: _formKey,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          spacing: 16,
+          children: [
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisSize: MainAxisSize.max,
               children: [
                 Text(
-                  'Custo calculado:',
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: colorScheme.onSurfaceVariant,
+                  'Editar Ingrediente',
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    color: colorScheme.onSurface,
+                    fontWeight: FontWeight.w700,
                   ),
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Text(
-                      'CUSTO POR UNIDADE',
-                      style: theme.textTheme.labelSmall?.copyWith(
-                        color: colorScheme.onSurfaceVariant,
-                        letterSpacing: 0.5,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.baseline,
-                      textBaseline: TextBaseline.alphabetic,
-                      children: [
-                        Text(
-                          'R\$ ${_calculatedUnitCost.toStringAsFixed(2)}',
-                          style: theme.textTheme.titleMedium?.copyWith(
-                            color: colorScheme.primary,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const SizedBox(width: 4),
-                        Text(
-                          '/ $_selectedUnit',
-                          style: theme.textTheme.bodySmall?.copyWith(
-                            color: colorScheme.onSurfaceVariant,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
+                IconButton(
+                  onPressed: () => Navigator.of(context).maybePop(),
+                  icon: Icon(Icons.close, color: colorScheme.onSurfaceVariant),
                 ),
               ],
             ),
-          ),
-          const SizedBox(height: 24),
-          Row(
-            children: [
-              Expanded(
-                child: TextButton(
-                  onPressed: () => Navigator.of(context).maybePop(),
-                  child: const Text('Cancelar'),
-                ),
+            FormBuilderTextField(
+              name: 'ingredient_name',
+              decoration: const InputDecoration(
+                labelText: 'Nome do ingrediente',
+                hintText: 'Ex: Chocolate em Pó',
               ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: FilledButton.icon(
-                  onPressed: _onSave,
-                  icon: const Icon(Icons.check, size: 18),
-                  label: const Text('Atualizar'),
-                  style: FilledButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 12),
+            ),
+            Row(
+              spacing: 12,
+              children: [
+                Expanded(
+                  flex: 3,
+                  child: FormBuilderTextField(
+                    name: 'ingredient_quantity',
+                    initialValue: widget.ingredient.quantity.toString(),
+                    keyboardType: TextInputType.number,
+                    decoration: const InputDecoration(
+                      labelText: 'Quantidade comprada',
+                    ),
                   ),
                 ),
+                Expanded(
+                  flex: 2,
+                  child: FormBuilderDropdown<String>(
+                    name: 'ingredient_unit',
+                    initialValue: widget.ingredient.unitLabel,
+                    decoration: const InputDecoration(labelText: 'Unidade'),
+                    items: _unitOptions
+                        .map(
+                          (unit) => DropdownMenuItem<String>(
+                            value: unit,
+                            child: Text(unit.toUpperCase()),
+                          ),
+                        )
+                        .toList(),
+                    onChanged: (value) {
+                      if (value == null) return;
+                      setState(() => widget.ingredient.unitLabel = value);
+                    },
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            TextField(
+              keyboardType: const TextInputType.numberWithOptions(
+                decimal: true,
               ),
-            ],
-          ),
-        ],
+              decoration: const InputDecoration(
+                labelText: 'Preço total da compra',
+                hintText: "R\$ 0,00",
+              ),
+            ),
+            const SizedBox(height: 16),
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+              decoration: BoxDecoration(
+                color: colorScheme.surfaceContainerHighest,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: colorScheme.outlineVariant),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Custo calculado:',
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(
+                        'CUSTO POR UNIDADE',
+                        style: theme.textTheme.labelSmall?.copyWith(
+                          color: colorScheme.onSurfaceVariant,
+                          letterSpacing: 0.5,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.baseline,
+                        textBaseline: TextBaseline.alphabetic,
+                        children: [
+                          Text(
+                            'R\$ ${_calculatedUnitCost.toStringAsFixed(2)}',
+                            style: theme.textTheme.titleMedium?.copyWith(
+                              color: colorScheme.primary,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(width: 4),
+                          Text(
+                            '/ ${widget.ingredient.unitLabel}',
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              color: colorScheme.onSurfaceVariant,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 24),
+            Row(
+              children: [
+                Expanded(
+                  child: TextButton(
+                    onPressed: () => Navigator.of(context).maybePop(),
+                    child: const Text('Cancelar'),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: FilledButton.icon(
+                    onPressed: () {},
+                    icon: const Icon(Icons.check, size: 18),
+                    label: const Text('Atualizar'),
+                    style: FilledButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -15,7 +15,7 @@
 ///
 /// Example:
 /// ```dart
-/// const ingredient = Ingredient(
+///  ingredient = Ingredient(
 ///   id: '1',
 ///   name: 'Tomato',
 ///   quantity: 2.0,
@@ -24,20 +24,42 @@
 ///   costPerUnit: 1.5,
 /// );
 /// ```
-interface class Ingredient {
-  final String? id;
-  final String name;
-  final double quantity;
-  final double totalCost;
-  final String unitLabel;
-  final double costPerUnit;
+class Ingredient {
+  String? id;
+  String name;
+  double quantity;
+  double totalCost;
+  String unitLabel;
+  double costPerUnit;
 
-  const Ingredient({
+  Ingredient({
     this.id,
-    required this.name,
-    required this.quantity,
-    required this.totalCost,
-    required this.unitLabel,
-    required this.costPerUnit,
+    this.name = "",
+    this.quantity = 0,
+    this.totalCost = 0,
+    this.unitLabel = "",
+    this.costPerUnit = 0,
   });
+
+  set setName(String name) {
+    this.name = name;
+  }
+
+  set setUnitLabel(String unitLabel) {
+    this.unitLabel = unitLabel;
+  }
+
+  set setQuantity(double quantity) {
+    this.quantity = quantity;
+    recalculateCostPerUnit();
+  }
+
+  set setTotalCost(double totalCost) {
+    this.totalCost = totalCost;
+    recalculateCostPerUnit();
+  }
+
+  void recalculateCostPerUnit() {
+    costPerUnit = quantity > 0 ? totalCost / quantity : 0;
+  }
 }

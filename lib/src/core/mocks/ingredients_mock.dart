@@ -1,7 +1,7 @@
 import 'package:reseller/src/modules/ingredients/domain/entities/ingredient.dart';
 
-// ignore: constant_identifier_names
-const Map<String, Ingredient> INGREDIENTS_MOCK = {
+// ignore: non_constant_identifier_names
+Map<String, Ingredient> INGREDIENTS_MOCK = {
   '1': Ingredient(
     id: '1',
     name: 'Tomato',
