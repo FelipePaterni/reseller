@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:provider/provider.dart';
-import 'package:reseller/src/modules/ingredients/data/provider/ingredients_provider.dart';
 import 'package:reseller/src/modules/ingredients/domain/entities/ingredient.dart';
+import 'package:reseller/src/modules/ingredients/presentation/widgets/calculated_cost_display.dart';
 
 class IngredientEditSheet extends StatefulWidget {
   final Ingredient ingredient;
@@ -118,90 +117,11 @@ class _IngredientEditSheetState extends State<IngredientEditSheet> {
                     double.tryParse(value ?? '') ?? 0.0,
               ),
             ),
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-              decoration: BoxDecoration(
-                color: colorScheme.surfaceContainerHighest,
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: colorScheme.outlineVariant),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Custo calculado:',
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: colorScheme.onSurfaceVariant,
-                    ),
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Text(
-                        'CUSTO POR UNIDADE',
-                        style: theme.textTheme.labelSmall?.copyWith(
-                          color: colorScheme.onSurfaceVariant,
-                          letterSpacing: 0.5,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.baseline,
-                        textBaseline: TextBaseline.alphabetic,
-                        spacing: 4,
-                        children: [
-                          Text(
-                            'R\$ ${widget.ingredient.costPerUnit.toStringAsFixed(2)}',
-                            style: theme.textTheme.titleMedium?.copyWith(
-                              color: colorScheme.primary,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Text(
-                            '/ ${widget.ingredient.unitLabel}',
-                            style: theme.textTheme.bodySmall?.copyWith(
-                              color: colorScheme.onSurfaceVariant,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+            CalculatedCostDisplay(
+              costPerUnit: widget.ingredient.costPerUnit,
+              unitLabel: widget.ingredient.unitLabel,
             ),
-            Row(
-              spacing: 12,
-              children: [
-                Expanded(
-                  child: TextButton(
-                    onPressed: () => Navigator.of(context).maybePop(),
-                    child: const Text('Cancelar'),
-                  ),
-                ),
-                Expanded(
-                  child: FilledButton.icon(
-                    onPressed: () {
-                      final isValid =
-                          _formKey.currentState?.saveAndValidate() ?? false;
-                      if (isValid) {
-                        Provider.of<IngredientsProvider>(
-                          context,
-                          listen: false,
-                        ).put(widget.ingredient);
-                        Navigator.of(context).maybePop();
-                      }
-                    },
-                    icon: const Icon(Icons.check, size: 18),
-                    label: const Text('Atualizar'),
-                    style: FilledButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                    ),
-                  ),
-                ),
-              ],
-            ),
+            
           ],
         ),
       ),

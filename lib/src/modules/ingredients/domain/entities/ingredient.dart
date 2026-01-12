@@ -60,6 +60,7 @@ class Ingredient {
   }
 
   void recalculateCostPerUnit() {
-    costPerUnit = quantity > 0 ? totalCost / quantity : 0;
+    costPerUnit = (quantity > 0 ? totalCost / quantity : 0);
+    costPerUnit = double.tryParse(costPerUnit.toStringAsFixed(2)) ?? 0.00;
   }
 }
