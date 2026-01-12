@@ -18,7 +18,14 @@ class IngredientList extends StatelessWidget {
         borderRadius: BorderRadius.vertical(top: Radius.circular(22)),
       ),
       builder: (sheetContext) => IngredientEditSheet(ingredient: ingredient),
-    );
+    ).then((editedIngredient) {
+      if (editedIngredient != null) {
+        Provider.of<IngredientsProvider>(
+          context,
+          listen: false,
+        ).put(editedIngredient);
+      }
+    });
   }
 
   @override
@@ -37,10 +44,7 @@ class IngredientList extends StatelessWidget {
           children: [
             ElevatedButton.icon(
               onPressed: () {
-                _openEditModal(
-                  context,
-                  Ingredient(),
-                );
+                _openEditModal(context, Ingredient());
               },
               icon: Icon(Icons.add),
               label: Text("Novo Ingrediente"),

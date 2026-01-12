@@ -121,7 +121,17 @@ class _IngredientEditSheetState extends State<IngredientEditSheet> {
               costPerUnit: widget.ingredient.costPerUnit,
               unitLabel: widget.ingredient.unitLabel,
             ),
-            
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () {
+                  if (_formKey.currentState?.saveAndValidate() ?? false) {
+                    Navigator.of(context).pop(widget.ingredient);
+                  }
+                },
+                child: const Text('Salvar Ingrediente'),
+              ),
+            ),
           ],
         ),
       ),
