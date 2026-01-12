@@ -1,19 +1,14 @@
 import 'package:flutter/material.dart';
 
-/// Widget que exibe o custo unitário calculado.
-///
-/// Responsabilidades:
-/// - Formatar e exibir o custo por unidade
-/// - Mostrar a unidade de medida
-/// - Aplicar estilo visual consistente
+
 class CalculatedCostDisplay extends StatelessWidget {
-  final double unitCost;
-  final String unit;
+  final double costPerUnit;
+  final String unitLabel;
 
   const CalculatedCostDisplay({
     super.key,
-    required this.unitCost,
-    required this.unit,
+    required this.costPerUnit,
+    required this.unitLabel,
   });
 
   @override
@@ -52,17 +47,17 @@ class CalculatedCostDisplay extends StatelessWidget {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.baseline,
                 textBaseline: TextBaseline.alphabetic,
+                spacing: 4,
                 children: [
                   Text(
-                    'R\$ ${unitCost.toStringAsFixed(2)}',
+                    'R\$ ${costPerUnit.toStringAsFixed(2)}',
                     style: theme.textTheme.titleMedium?.copyWith(
                       color: colorScheme.primary,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const SizedBox(width: 4),
                   Text(
-                    '/ $unit',
+                    '/ $unitLabel',
                     style: theme.textTheme.bodySmall?.copyWith(
                       color: colorScheme.onSurfaceVariant,
                     ),

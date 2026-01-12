@@ -25,41 +25,64 @@
 /// );
 /// ```
 class Ingredient {
-  String? id;
-  String name;
-  double quantity;
-  double totalCost;
-  String unitLabel;
-  double costPerUnit;
+  String? _id;
+  String _name;
+  double _quantity;
+  double _totalCost;
+  String _unitLabel;
+  double _costPerUnit;
 
   Ingredient({
-    this.id,
-    this.name = "",
-    this.quantity = 0,
-    this.totalCost = 0,
-    this.unitLabel = "",
-    this.costPerUnit = 0,
-  });
+    String? id,
+    String name = "",
+    double quantity = 0,
+    double totalCost = 0,
+    String unitLabel = "",
+    double costPerUnit = 0,
+  }) : _id = id,
+       _name = name,
+       _quantity = quantity,
+       _totalCost = totalCost,
+       _unitLabel = unitLabel,
+       _costPerUnit = costPerUnit;
 
-  set setName(String name) {
-    this.name = name;
+  // Getters
+  String? get id => _id;
+  String get name => _name;
+  double get quantity => _quantity;
+  double get totalCost => _totalCost;
+  String get unitLabel => _unitLabel;
+  double get costPerUnit => _costPerUnit;
+
+  // Setters
+  set id(String? value) {
+    _id = value;
   }
 
-  set setUnitLabel(String unitLabel) {
-    this.unitLabel = unitLabel;
+  set name(String value) {
+    _name = value;
   }
 
-  set setQuantity(double quantity) {
-    this.quantity = quantity;
-    recalculateCostPerUnit();
+  set unitLabel(String value) {
+    _unitLabel = value;
   }
 
-  set setTotalCost(double totalCost) {
-    this.totalCost = totalCost;
-    recalculateCostPerUnit();
+  set quantity(double value) {
+    _quantity = value;
+    _recalculateCostPerUnit();
+  }
+
+  set totalCost(double value) {
+    _totalCost = value;
+    _recalculateCostPerUnit();
+  }
+
+  void _recalculateCostPerUnit() {
+    _costPerUnit = (_quantity > 0 ? _totalCost / _quantity : 0);
+    _costPerUnit = (_costPerUnit * 100).round() / 100;
   }
 
   void recalculateCostPerUnit() {
-    costPerUnit = quantity > 0 ? totalCost / quantity : 0;
+    _recalculateCostPerUnit();
   }
 }

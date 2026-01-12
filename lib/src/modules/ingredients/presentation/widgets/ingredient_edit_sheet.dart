@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:reseller/src/modules/ingredients/domain/entities/ingredient.dart';
 import 'package:provider/provider.dart';
 import 'package:reseller/src/modules/ingredients/data/provider/ingredients_provider.dart';
-import 'package:reseller/src/modules/ingredients/domain/entities/ingredient.dart';
+import 'package:reseller/src/modules/ingredients/presentation/widgets/calculated_cost_display.dart';
 
 class IngredientEditSheet extends StatefulWidget {
   final Ingredient ingredient;
@@ -76,7 +77,7 @@ class _IngredientEditSheetState extends State<IngredientEditSheet> {
                       labelText: 'Quantidade comprada',
                     ),
                     onChanged: (value) => setState(
-                      () => widget.ingredient.setQuantity =
+                      () => widget.ingredient.quantity =
                           double.tryParse(value ?? '') ?? 0.0,
                     ),
                   ),
@@ -97,7 +98,7 @@ class _IngredientEditSheetState extends State<IngredientEditSheet> {
                         .toList(),
                     onChanged: (value) {
                       if (value == null) return;
-                      setState(() => widget.ingredient.setUnitLabel = value);
+                      setState(() => widget.ingredient.unitLabel = value);
                     },
                   ),
                 ),
@@ -114,62 +115,13 @@ class _IngredientEditSheetState extends State<IngredientEditSheet> {
               ),
               initialValue: widget.ingredient.totalCost.toString(),
               onChanged: (value) => setState(
-                () => widget.ingredient.setTotalCost =
+                () => widget.ingredient.totalCost =
                     double.tryParse(value ?? '') ?? 0.0,
               ),
             ),
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-              decoration: BoxDecoration(
-                color: colorScheme.surfaceContainerHighest,
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: colorScheme.outlineVariant),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Custo calculado:',
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: colorScheme.onSurfaceVariant,
-                    ),
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Text(
-                        'CUSTO POR UNIDADE',
-                        style: theme.textTheme.labelSmall?.copyWith(
-                          color: colorScheme.onSurfaceVariant,
-                          letterSpacing: 0.5,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.baseline,
-                        textBaseline: TextBaseline.alphabetic,
-                        spacing: 4,
-                        children: [
-                          Text(
-                            'R\$ ${widget.ingredient.costPerUnit.toStringAsFixed(2)}',
-                            style: theme.textTheme.titleMedium?.copyWith(
-                              color: colorScheme.primary,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Text(
-                            '/ ${widget.ingredient.unitLabel}',
-                            style: theme.textTheme.bodySmall?.copyWith(
-                              color: colorScheme.onSurfaceVariant,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+            CalculatedCostDisplay(
+              costPerUnit: widget.ingredient.costPerUnit,
+              unitLabel: widget.ingredient.unitLabel,
             ),
             Row(
               spacing: 12,
