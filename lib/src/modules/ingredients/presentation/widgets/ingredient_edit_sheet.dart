@@ -121,7 +121,6 @@ class _IngredientEditSheetState extends State<IngredientEditSheet> {
               costPerUnit: widget.ingredient.costPerUnit,
               unitLabel: widget.ingredient.unitLabel,
             ),
-            
           ],
         ),
       ),
