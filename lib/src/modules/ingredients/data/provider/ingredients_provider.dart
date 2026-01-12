@@ -16,15 +16,23 @@ class IngredientsProvider with ChangeNotifier {
   Ingredient getByIndex(int index) => _ingredients.values.elementAt(index);
 
   /// Update existing ingredient or create new one
-  void update(Ingredient ingredient) {
+  void put(Ingredient ingredient) {
     if (ingredient.id != null &&
         ingredient.id!.isNotEmpty &&
         _ingredients.containsKey(ingredient.id)) {
       _ingredients[ingredient.id!] = ingredient;
-      notifyListeners();
     } else {
-      create(ingredient);
+      final id = Random().nextDouble().toString();
+      _ingredients[id] = Ingredient(
+        id: id,
+        name: ingredient.name,
+        quantity: ingredient.quantity,
+        unitLabel: ingredient.unitLabel,
+        costPerUnit: ingredient.costPerUnit,
+        totalCost: ingredient.totalCost,
+      );
     }
+    notifyListeners();
   }
 
   /// Delete ingredient by ID
@@ -43,19 +51,5 @@ class IngredientsProvider with ChangeNotifier {
       _ingredients.remove(ingredient.id);
       notifyListeners();
     }
-  }
-
-  /// Add new ingredient
-  void create(Ingredient ingredient) {
-    final id = Random().nextDouble().toString();
-    _ingredients[id] = Ingredient(
-      id: id,
-      name: ingredient.name,
-      quantity: ingredient.quantity,
-      unitLabel: ingredient.unitLabel,
-      costPerUnit: ingredient.costPerUnit,
-      totalCost: ingredient.totalCost,
-    );
-    notifyListeners();
   }
 }

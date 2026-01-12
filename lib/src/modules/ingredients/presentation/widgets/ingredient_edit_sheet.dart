@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:provider/provider.dart';
+import 'package:reseller/src/modules/ingredients/data/provider/ingredients_provider.dart';
 import 'package:reseller/src/modules/ingredients/domain/entities/ingredient.dart';
 
 class IngredientEditSheet extends StatefulWidget {
@@ -13,9 +15,7 @@ class IngredientEditSheet extends StatefulWidget {
 
 class _IngredientEditSheetState extends State<IngredientEditSheet> {
   final _formKey = GlobalKey<FormBuilderState>();
-
-  late final double _calculatedUnitCost = 0.0;
-
+  //  final Map<String, dynamic> _formData = {};
   static const List<String> _unitOptions = <String>['kg', 'g', 'un', 'ml', 'l'];
 
   @override
@@ -55,10 +55,13 @@ class _IngredientEditSheetState extends State<IngredientEditSheet> {
             ),
             FormBuilderTextField(
               name: 'ingredient_name',
+              initialValue: widget.ingredient.name,
               decoration: const InputDecoration(
                 labelText: 'Nome do ingrediente',
                 hintText: 'Ex: Chocolate em Pó',
               ),
+              onChanged: (value) =>
+                  setState(() => widget.ingredient.name = value ?? ''),
             ),
             Row(
               spacing: 12,
@@ -71,6 +74,10 @@ class _IngredientEditSheetState extends State<IngredientEditSheet> {
                     keyboardType: TextInputType.number,
                     decoration: const InputDecoration(
                       labelText: 'Quantidade comprada',
+                    ),
+                    onChanged: (value) => setState(
+                      () => widget.ingredient.setQuantity =
+                          double.tryParse(value ?? '') ?? 0.0,
                     ),
                   ),
                 ),
@@ -90,14 +97,14 @@ class _IngredientEditSheetState extends State<IngredientEditSheet> {
                         .toList(),
                     onChanged: (value) {
                       if (value == null) return;
-                      setState(() => widget.ingredient.unitLabel = value);
+                      setState(() => widget.ingredient.setUnitLabel = value);
                     },
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 16),
-            TextField(
+            FormBuilderTextField(
+              name: 'ingredient_total_cost',
               keyboardType: const TextInputType.numberWithOptions(
                 decimal: true,
               ),
@@ -105,8 +112,12 @@ class _IngredientEditSheetState extends State<IngredientEditSheet> {
                 labelText: 'Preço total da compra',
                 hintText: "R\$ 0,00",
               ),
+              initialValue: widget.ingredient.totalCost.toString(),
+              onChanged: (value) => setState(
+                () => widget.ingredient.setTotalCost =
+                    double.tryParse(value ?? '') ?? 0.0,
+              ),
             ),
-            const SizedBox(height: 16),
             Container(
               width: double.infinity,
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
@@ -138,15 +149,15 @@ class _IngredientEditSheetState extends State<IngredientEditSheet> {
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.baseline,
                         textBaseline: TextBaseline.alphabetic,
+                        spacing: 4,
                         children: [
                           Text(
-                            'R\$ ${_calculatedUnitCost.toStringAsFixed(2)}',
+                            'R\$ ${widget.ingredient.costPerUnit.toStringAsFixed(2)}',
                             style: theme.textTheme.titleMedium?.copyWith(
                               color: colorScheme.primary,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          const SizedBox(width: 4),
                           Text(
                             '/ ${widget.ingredient.unitLabel}',
                             style: theme.textTheme.bodySmall?.copyWith(
@@ -160,8 +171,8 @@ class _IngredientEditSheetState extends State<IngredientEditSheet> {
                 ],
               ),
             ),
-            const SizedBox(height: 24),
             Row(
+              spacing: 12,
               children: [
                 Expanded(
                   child: TextButton(
@@ -169,10 +180,19 @@ class _IngredientEditSheetState extends State<IngredientEditSheet> {
                     child: const Text('Cancelar'),
                   ),
                 ),
-                const SizedBox(width: 12),
                 Expanded(
                   child: FilledButton.icon(
-                    onPressed: () {},
+                    onPressed: () {
+                      final isValid =
+                          _formKey.currentState?.saveAndValidate() ?? false;
+                      if (isValid) {
+                        Provider.of<IngredientsProvider>(
+                          context,
+                          listen: false,
+                        ).put(widget.ingredient);
+                        Navigator.of(context).maybePop();
+                      }
+                    },
                     icon: const Icon(Icons.check, size: 18),
                     label: const Text('Atualizar'),
                     style: FilledButton.styleFrom(
