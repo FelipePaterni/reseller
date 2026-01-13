@@ -67,14 +67,17 @@ class _RecipeInfoState extends State<RecipeInfo> {
                     ),
                   ),
                   Expanded(
-                    child: TabBarView(
-                      children: [
-                        Text("EM construction"),
-                        TableTab(
-                          scrollController: scrollController,
-                          items: widget.recipe.items,
-                        ),
-                      ],
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: TabBarView(
+                        children: [
+                          Text("EM construction"),
+                          TableTab(
+                            scrollController: scrollController,
+                            items: widget.recipe.items,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ],

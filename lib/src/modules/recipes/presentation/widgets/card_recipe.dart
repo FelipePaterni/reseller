@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:reseller/src/core/theme/app_colors.dart';
+import 'package:reseller/src/modules/recipes/domain/entities/recipe.dart';
 
 class CardRecipe extends StatelessWidget {
-  final String title;
-  final String content;
+  final Recipe recipe;
   final String? imagePath;
   final IconData? icon;
   final Color? iconColor;
@@ -14,8 +14,7 @@ class CardRecipe extends StatelessWidget {
   const CardRecipe.image({
     super.key,
     required this.imagePath,
-    required this.title,
-    required this.content,
+    required this.recipe,
     this.onTap,
   }) : icon = null,
        iconColor = null,
@@ -25,8 +24,7 @@ class CardRecipe extends StatelessWidget {
   const CardRecipe.icon({
     super.key,
     required this.icon,
-    required this.title,
-    required this.content,
+    required this.recipe,
     this.onTap,
     this.iconColor,
     this.iconBackgroundColor,
@@ -44,27 +42,11 @@ class CardRecipe extends StatelessWidget {
             mainAxisSize: MainAxisSize.max,
             children: [
               _buildLeadingWidget(context),
-              Expanded(
-                child: Column(
-                  spacing: 8,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      title,
-                      style: Theme.of(context).textTheme.headlineSmall
-                          ?.copyWith(
-                            color: Theme.of(context).colorScheme.primary,
-                            fontWeight: FontWeight.bold,
-                          ),
-                    ),
-                    Text(
-                      content,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: Theme.of(context).colorScheme.onSurfaceVariant,
-                      ),
-                    ),
-                  ],
+              Text(
+                recipe.name,
+                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                  color: Theme.of(context).colorScheme.primary,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ],
