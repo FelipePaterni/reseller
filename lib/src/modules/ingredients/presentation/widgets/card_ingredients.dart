@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:reseller/src/modules/ingredients/domain/entities/ingredients.dart';
+import 'package:reseller/src/modules/ingredients/domain/entities/ingredient.dart';
 
 class CardIngredients extends StatelessWidget {
   final Ingredient ingredient;
-  final Function? onTap;
-
+  final VoidCallback? onTap;
   const CardIngredients({super.key, required this.ingredient, this.onTap});
 
   @override
@@ -26,7 +25,7 @@ class CardIngredients extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    ingredient.title,
+                    ingredient.name,
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       color: Theme.of(context).colorScheme.primary,
                       fontWeight: FontWeight.bold,
@@ -49,7 +48,7 @@ class CardIngredients extends StatelessWidget {
                   Chip(
                     padding: const EdgeInsets.all(0),
                     label: Text(
-                      'Qtd: ${ingredient.quantity} ${ingredient.costPerUnitLabel}',
+                      'Qtd: ${ingredient.quantity} ${ingredient.unitLabel}',
                       style: Theme.of(context).textTheme.labelMedium?.copyWith(
                         color: Theme.of(context).colorScheme.onSurface,
                       ),
@@ -95,7 +94,7 @@ class CardIngredients extends StatelessWidget {
                       ),
                       const SizedBox(width: 4),
                       Text(
-                        '/ ${ingredient.costPerUnitLabel}',
+                        '/ ${ingredient.unitLabel}',
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: Theme.of(context).colorScheme.onSurfaceVariant,
                         ),

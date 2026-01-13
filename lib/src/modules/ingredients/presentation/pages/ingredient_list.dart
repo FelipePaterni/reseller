@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:reseller/src/modules/ingredients/domain/entities/ingredients.dart';
+import 'package:provider/provider.dart';
+import 'package:reseller/src/modules/ingredients/data/provider/ingredients_provider.dart';
+import 'package:reseller/src/modules/ingredients/domain/entities/ingredient.dart';
 import 'package:reseller/src/modules/ingredients/presentation/widgets/card_ingredients.dart';
 import 'package:reseller/src/modules/ingredients/presentation/widgets/ingredient_edit_sheet.dart';
 
@@ -21,26 +23,38 @@ class IngredientList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final IngredientsProvider ingredients = Provider.of<IngredientsProvider>(
+      context,
+    );
+
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8),
-        child: ListView.builder(
-          itemCount: 1,
-          itemBuilder: (context, index) {
-            final ingredient = Ingredient(
-              id: '1',
-              title: 'Tomato',
-              quantity: 10,
-              totalCost: 25.0,
-              costPerUnitLabel: 'kg',
-              costPerUnit: 2.5,
-            );
-
-            return CardIngredients(
-              ingredient: ingredient,
-              onTap: () => _openEditModal(context, ingredient),
-            );
-          },
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          spacing: 16,
+          children: [
+            ElevatedButton.icon(
+              onPressed: () {
+                _openEditModal(context, Ingredient());
+              },
+              icon: Icon(Icons.add),
+              label: Text("Novo Ingrediente"),
+            ),
+            Expanded(
+              child: ListView.builder(
+                itemCount: ingredients.count,
+                itemBuilder: (context, index) {
+                  final ingredient = ingredients.getByIndex(index);
+                  return CardIngredients(
+                    ingredient: ingredient,
+                    onTap: () => _openEditModal(context, ingredient),
+                  );
+                },
+              ),
+            ),
+          ],
         ),
       ),
     );
