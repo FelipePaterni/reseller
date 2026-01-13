@@ -1,64 +1,50 @@
 import 'package:flutter/material.dart';
-import 'package:reseller/src/core/mocks/recipe_mock.dart';
 import 'package:reseller/src/modules/recipes/domain/entities/recipe.dart';
-import 'package:uuid/uuid.dart';
+import 'package:reseller/src/modules/recipes/domain/repositories/recipes_repository.dart';
 
-/// Provider for managing recipes state
 class RecipesProvider with ChangeNotifier {
-  final Map<String, Recipe> _recipes = {...RECIPES_MOCK};
+  final RecipesRepository repository;
 
-  List<Recipe> get getAll => [..._recipes.values];
+  RecipesProvider(this.repository);
+
+  List<Recipe> _recipes = [];
+
+  List<Recipe> get all => _recipes;
 
   int get count => _recipes.length;
 
-  Recipe? getById(String id) => _recipes[id];
+  Recipe? getById(String id) {
+    try {
+      return _recipes.firstWhere((r) => r.id == id);
+    } catch (e) {
+      return null;
+    }
+  }
 
   Recipe getByIndex(int index) {
     if (index < 0 || index >= _recipes.length) {
       throw RangeError('Index out of range');
     }
-    return _recipes.values.elementAt(index);
+    return _recipes[index];
   }
 
-  /// Create or update a recipe
-  ///
-  /// If the [recipe] has an ID and exists, it updates it.
-  /// Otherwise, it creates a new [recipe] with a new ID.
-  void createOrUpdate(Recipe recipe) {
-    if (recipe.id != null &&
-        recipe.id!.isNotEmpty &&
-        _recipes.containsKey(recipe.id)) {
-      _recipes[recipe.id!] = recipe;
-    } else {
-      final id = Uuid().v4();
-
-      _recipes[id] = Recipe(
-        id: id,
-        name: recipe.name,
-        description: recipe.description,
-        items: recipe.items,
-        imagePath: recipe.imagePath,
-        yieldRecipe: recipe.yieldRecipe,
-      );
-    }
+  Future<void> load() async {
+    _recipes = await repository.getAll();
     notifyListeners();
   }
 
-  /// Delete recipe by ID
-  void deleteById(String id) {
-    if (_recipes.containsKey(id)) {
-      _recipes.remove(id);
-      notifyListeners();
-    }
+  Future<void> createOrUpdate(Recipe recipe) async {
+    await repository.save(recipe);
+    await load();
   }
 
-  /// Delete recipe by object
-  void deleteByObject(Recipe recipe) {
-    if (recipe.id != null &&
-        recipe.id!.isNotEmpty &&
-        _recipes.containsKey(recipe.id)) {
-      _recipes.remove(recipe.id);
-      notifyListeners();
-    }
+  Future<void> deleteById(String id) async {
+    await repository.delete(id);
+    await load();
+  }
+
+  Future<void> deleteByObject(Recipe recipe) async {
+    if (recipe.id == null || recipe.id!.isEmpty) return;
+    await deleteById(recipe.id!);
   }
 }

@@ -5,6 +5,7 @@ import 'package:reseller/src/app/router/routes.dart';
 import 'package:reseller/src/core/constants/app_constants.dart';
 import 'package:reseller/src/core/theme/app_theme.dart';
 import 'package:reseller/src/modules/ingredients/presentation/provider/ingredients_provider.dart';
+import 'package:reseller/src/modules/recipes/domain/repositories/recipes_repository_mock.dart';
 import 'package:reseller/src/modules/recipes/presentation/provider/recipes_provider.dart';
 
 class AppWidget extends StatelessWidget {
@@ -15,7 +16,7 @@ class AppWidget extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (ctx) => IngredientsProvider()),
-        ChangeNotifierProvider(create: (ctx) => RecipesProvider()),
+        ChangeNotifierProvider(create: (ctx) => RecipesProvider(RecipesRepositoryMock())),
       ],
       child: MaterialApp(
         title: AppConstants.appTitle,

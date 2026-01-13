@@ -7,7 +7,7 @@ import 'package:reseller/src/modules/recipes/presentation/widgets/card_recipe.da
 class RecipeList extends StatelessWidget {
   const RecipeList({super.key});
 
-  static final List<Recipe> recipes = RECIPES_MOCK.values.toList();
+  static final List<Recipe> recipes = [...RECIPES_MOCK.values];
 
   @override
   Widget build(BuildContext context) {

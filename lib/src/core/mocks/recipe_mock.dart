@@ -7,7 +7,7 @@ final Map<String, Recipe> RECIPES_MOCK = {
     id: '1',
     name: 'Pizza',
     yieldRecipe: 2.0,
-    imagePath: "assets/images/pizza.png",
+    imagePath: "https://picsum.photos/400/280",
     items: [
       RecipeItem(ingredient: INGREDIENTS_MOCK['1']!, quantity: 2.0),
       RecipeItem(ingredient: INGREDIENTS_MOCK['2']!, quantity: 5.0),
