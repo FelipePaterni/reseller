@@ -1,62 +1,28 @@
-import 'package:flutter/material.dart';
+import 'package:reseller/src/modules/ingredients/domain/entities/ingredient.dart';
 
-/// Recipe entity
-/// Represents a recipe with its details.
-///
-/// [id] - Unique identifier for the recipe **(auto-generated)**.
-///
-/// [icon] - Icon representing the recipe (in the future can be an image).
-///
-/// [title] - Title of the recipe.
-///
-/// [description] - Description of the recipe.
-///
-/// [ingredientsIds] - List of ingredient IDs required for the recipe.
-///
-/// Example:
-/// ```dart
-/// final recipe = Recipe(
-///   id: '1',
-///   icon: Icons.fastfood,
-///   title: 'Pasta',
-///   description: 'Delicious pasta recipe',
-///   ingredientsIds: [
-///     '1',
-///     '2',
-///   ],
-/// );
-/// ```
 class Recipe {
-  String? id;
-  IconData? icon;
-  String title;
-  String description;
-  final List<String> _ingredientsIds;
+  final String? id;
+  final String? imagePath;
+  final String name;
+  final String description;
+  final double yieldRecipe;
+  final List<RecipeItem> items;
 
   Recipe({
     this.id,
-    this.icon,
-    this.title = '',
+    this.imagePath,
+    this.name = '',
     this.description = '',
-    List<String>? ingredientsIds,
-  }) : _ingredientsIds = List<String>.from(ingredientsIds ?? const []);
+    this.yieldRecipe = 1.0,
+    this.items = const [],
+  });
+}
 
-  List<String> get ingredientsIds => List.unmodifiable(_ingredientsIds);
+class RecipeItem {
+  final Ingredient ingredient;
+  final double quantity;
 
-  void setIngredients(List<String> ids) {
-    _ingredientsIds
-      ..clear()
-      ..addAll(ids);
-  }
+  RecipeItem({required this.ingredient, required this.quantity});
 
-  void addIngredient(String ingredientId) {
-    if (ingredientId.isEmpty || _ingredientsIds.contains(ingredientId)) {
-      return;
-    }
-    _ingredientsIds.add(ingredientId);
-  }
-
-  void removeIngredient(String ingredientId) {
-    _ingredientsIds.remove(ingredientId);
-  }
+  double get totalCost => ingredient.costPerUnit * quantity;
 }

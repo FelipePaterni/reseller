@@ -44,7 +44,7 @@ class _RecipeInfoState extends State<RecipeInfo> {
                 ),
               ),
               DraggableBottom(
-                widget.recipe.title,
+                widget.recipe.name,
                 builder: (scrollController) => [
                   PreferredSize(
                     preferredSize: const Size.fromHeight(40),

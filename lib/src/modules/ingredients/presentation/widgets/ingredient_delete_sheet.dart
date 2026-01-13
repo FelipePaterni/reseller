@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:reseller/src/modules/ingredients/data/provider/ingredients_provider.dart';
+import 'package:reseller/src/modules/ingredients/presentation/provider/ingredients_provider.dart';
 import 'package:reseller/src/modules/ingredients/domain/entities/ingredient.dart';
 
 class IngredientDeleteSheet extends StatelessWidget {

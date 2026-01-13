@@ -34,10 +34,11 @@ class RecipesProvider with ChangeNotifier {
 
       _recipes[id] = Recipe(
         id: id,
-        icon: recipe.icon,
-        title: recipe.title,
+        name: recipe.name,
         description: recipe.description,
-        ingredientsIds: recipe.ingredientsIds,
+        items: recipe.items,
+        imagePath: recipe.imagePath,
+        yieldRecipe: recipe.yieldRecipe,
       );
     }
     notifyListeners();

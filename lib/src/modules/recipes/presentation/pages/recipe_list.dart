@@ -19,8 +19,8 @@ class RecipeList extends StatelessWidget {
           return Padding(
             padding: const EdgeInsets.all(8.0),
             child: CardRecipe.icon(
-              icon: recipe.icon ?? Icons.restaurant,
-              title: recipe.title,
+              icon: Icons.restaurant,
+              title: recipe.name,
               content: recipe.description,
               onTap: () => Navigator.pushNamed(
                 context,
