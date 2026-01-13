@@ -15,7 +15,7 @@ import 'package:flutter/material.dart';
 ///
 /// Example:
 /// ```dart
-/// const recipe = Recipe(
+/// final recipe = Recipe(
 ///   id: '1',
 ///   icon: Icons.fastfood,
 ///   title: 'Pasta',
@@ -26,18 +26,37 @@ import 'package:flutter/material.dart';
 ///   ],
 /// );
 /// ```
-interface class Recipe {
-  final String? id;
-  final IconData? icon;
-  final String title;
-  final String description;
-  final List<String> ingredientsIds;
+class Recipe {
+  String? id;
+  IconData? icon;
+  String title;
+  String description;
+  final List<String> _ingredientsIds;
 
-  const Recipe({
+  Recipe({
     this.id,
     this.icon,
-    required this.title,
-    required this.description,
-    required this.ingredientsIds,
-  });
+    this.title = '',
+    this.description = '',
+    List<String>? ingredientsIds,
+  }) : _ingredientsIds = List<String>.from(ingredientsIds ?? const []);
+
+  List<String> get ingredientsIds => List.unmodifiable(_ingredientsIds);
+
+  void setIngredients(List<String> ids) {
+    _ingredientsIds
+      ..clear()
+      ..addAll(ids);
+  }
+
+  void addIngredient(String ingredientId) {
+    if (ingredientId.isEmpty || _ingredientsIds.contains(ingredientId)) {
+      return;
+    }
+    _ingredientsIds.add(ingredientId);
+  }
+
+  void removeIngredient(String ingredientId) {
+    _ingredientsIds.remove(ingredientId);
+  }
 }
