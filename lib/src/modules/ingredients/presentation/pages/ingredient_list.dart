@@ -37,10 +37,7 @@ class IngredientList extends StatelessWidget {
           children: [
             ElevatedButton.icon(
               onPressed: () {
-                _openEditModal(
-                  context,
-                  Ingredient(),
-                );
+                _openEditModal(context, Ingredient());
               },
               icon: Icon(Icons.add),
               label: Text("Novo Ingrediente"),
