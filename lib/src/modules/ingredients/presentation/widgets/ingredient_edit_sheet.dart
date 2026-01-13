@@ -42,7 +42,9 @@ class _IngredientEditSheetState extends State<IngredientEditSheet> {
               mainAxisSize: MainAxisSize.max,
               children: [
                 Text(
-                  'Editar Ingrediente',
+                  widget.ingredient.id != null
+                      ? 'Editar Ingrediente'
+                      : 'Adicionar Ingrediente',
                   style: theme.textTheme.titleMedium?.copyWith(
                     color: colorScheme.onSurface,
                     fontWeight: FontWeight.w700,
@@ -141,7 +143,7 @@ class _IngredientEditSheetState extends State<IngredientEditSheet> {
                         Provider.of<IngredientsProvider>(
                           context,
                           listen: false,
-                        ).put(widget.ingredient);
+                        ).createOrUpdate(widget.ingredient);
                         Navigator.of(context).maybePop();
                       }
                     },

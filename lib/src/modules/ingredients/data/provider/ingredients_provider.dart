@@ -1,7 +1,7 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:reseller/src/core/mocks/ingredients_mock.dart';
 import 'package:reseller/src/modules/ingredients/domain/entities/ingredient.dart';
+import 'package:uuid/uuid.dart';
 
 /// Provider for managing ingredients state
 class IngredientsProvider with ChangeNotifier {
@@ -13,16 +13,25 @@ class IngredientsProvider with ChangeNotifier {
 
   Ingredient? getById(String id) => _ingredients[id];
 
-  Ingredient getByIndex(int index) => _ingredients.values.elementAt(index);
+  Ingredient getByIndex(int index) {
+    if (index < 0 || index >= _ingredients.length) {
+      throw RangeError('Index out of range');
+    }
+    return _ingredients.values.elementAt(index);
+  }
 
-  /// Update existing ingredient or create new one
-  void put(Ingredient ingredient) {
+  /// Create or update an ingredient
+  ///
+  /// If the [ingredient] has an ID and exists, it updates it.
+  /// Otherwise, it creates a new [ingredient] with a new ID.
+  void createOrUpdate(Ingredient ingredient) {
     if (ingredient.id != null &&
         ingredient.id!.isNotEmpty &&
         _ingredients.containsKey(ingredient.id)) {
       _ingredients[ingredient.id!] = ingredient;
     } else {
-      final id = Random().nextDouble().toString();
+      final id = Uuid().v4();
+
       _ingredients[id] = Ingredient(
         id: id,
         name: ingredient.name,
