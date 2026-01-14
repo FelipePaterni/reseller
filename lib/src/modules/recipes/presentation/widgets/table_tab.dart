@@ -26,6 +26,7 @@ class TableTab extends StatelessWidget {
         recipeId: recipeId,
         recipeItem: items[index],
         itemIndex: index,
+        currentItems: items,
       ),
     );
   }

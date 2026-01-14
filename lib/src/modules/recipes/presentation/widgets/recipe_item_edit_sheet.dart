@@ -11,12 +11,14 @@ class RecipeItemEditSheet extends StatefulWidget {
   final String recipeId;
   final RecipeItem? recipeItem;
   final int? itemIndex;
+  final List<RecipeItem> currentItems;
 
   const RecipeItemEditSheet({
     super.key,
     required this.recipeId,
     this.recipeItem,
     this.itemIndex,
+    this.currentItems = const [],
   });
 
   @override
@@ -88,7 +90,20 @@ class _RecipeItemEditSheetState extends State<RecipeItemEditSheet> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    final ingredients = context.watch<IngredientsProvider>().getAll;
+    final allIngredients = context.watch<IngredientsProvider>().getAll;
+
+    // Get IDs of ingredients already in the recipe (excluding current one if editing)
+    final usedIngredientIds = widget.currentItems
+        .asMap()
+        .entries
+        .where((entry) => entry.key != widget.itemIndex)
+        .map((entry) => entry.value.ingredient.id)
+        .toSet();
+
+    // Filter ingredients to show only those not yet added
+    final availableIngredients = allIngredients
+        .where((ingredient) => !usedIngredientIds.contains(ingredient.id))
+        .toList();
 
     return SingleChildScrollView(
       padding: EdgeInsets.only(
@@ -122,33 +137,43 @@ class _RecipeItemEditSheetState extends State<RecipeItemEditSheet> {
                 ),
               ],
             ),
-            FormBuilderDropdown<Ingredient>(
-              name: 'ingredient_select',
-              initialValue: _selectedIngredient,
-              decoration: const InputDecoration(
-                labelText: 'Ingrediente',
-                hintText: 'Selecione um ingrediente',
+            if (availableIngredients.isEmpty)
+              Center(
+                child: Text(
+                  'Todos os ingredientes já foram adicionados',
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: colorScheme.onSurfaceVariant,
+                  ),
+                ),
+              )
+            else
+              FormBuilderDropdown<Ingredient>(
+                name: 'ingredient_select',
+                initialValue: _selectedIngredient,
+                decoration: const InputDecoration(
+                  labelText: 'Ingrediente',
+                  hintText: 'Selecione um ingrediente',
+                ),
+                items: availableIngredients
+                    .map(
+                      (ingredient) => DropdownMenuItem<Ingredient>(
+                        value: ingredient,
+                        child: Text(ingredient.name),
+                      ),
+                    )
+                    .toList(),
+                onChanged: (value) {
+                  if (value != null) {
+                    setState(() => _selectedIngredient = value);
+                  }
+                },
+                validator: (value) {
+                  if (value == null) {
+                    return 'Selecione um ingrediente';
+                  }
+                  return null;
+                },
               ),
-              items: ingredients
-                  .map(
-                    (ingredient) => DropdownMenuItem<Ingredient>(
-                      value: ingredient,
-                      child: Text(ingredient.name),
-                    ),
-                  )
-                  .toList(),
-              onChanged: (value) {
-                if (value != null) {
-                  setState(() => _selectedIngredient = value);
-                }
-              },
-              validator: (value) {
-                if (value == null) {
-                  return 'Selecione um ingrediente';
-                }
-                return null;
-              },
-            ),
             FormBuilderTextField(
               name: 'quantity',
               initialValue: _quantity.toString(),
@@ -242,7 +267,9 @@ class _RecipeItemEditSheetState extends State<RecipeItemEditSheet> {
                 ),
                 Expanded(
                   child: FilledButton.icon(
-                    onPressed: _isLoading ? null : _saveRecipeItem,
+                    onPressed: availableIngredients.isEmpty || _isLoading
+                        ? null
+                        : _saveRecipeItem,
                     icon: _isLoading
                         ? const SizedBox(
                             width: 18,

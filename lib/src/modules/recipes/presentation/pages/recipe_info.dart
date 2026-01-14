@@ -22,7 +22,13 @@ class _RecipeInfoState extends State<RecipeInfo> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      builder: (context) => RecipeItemEditSheet(recipeId: widget.recipeId),
+      builder: (context) => RecipeItemEditSheet(
+        recipeId: widget.recipeId,
+        currentItems: context
+            .read<RecipesProvider>()
+            .getById(widget.recipeId)
+            .items,
+      ),
     );
   }
 
