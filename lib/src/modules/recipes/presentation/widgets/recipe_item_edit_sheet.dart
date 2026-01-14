@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:provider/provider.dart';
-import 'package:reseller/src/core/theme/app_colors.dart';
 import 'package:reseller/src/modules/ingredients/domain/entities/ingredient.dart';
 import 'package:reseller/src/modules/ingredients/presentation/provider/ingredients_provider.dart';
 import 'package:reseller/src/modules/recipes/domain/entities/recipe.dart';
 import 'package:reseller/src/modules/recipes/presentation/provider/recipes_provider.dart';
+import 'package:reseller/src/modules/recipes/presentation/widgets/ingredient_total_recipe.dart';
 
 class RecipeItemEditSheet extends StatefulWidget {
   final String recipeId;
@@ -105,6 +105,14 @@ class _RecipeItemEditSheetState extends State<RecipeItemEditSheet> {
         .where((ingredient) => !usedIngredientIds.contains(ingredient.id))
         .toList();
 
+    // Ensure _selectedIngredient is in availableIngredients
+    if (!availableIngredients.contains(_selectedIngredient) &&
+        availableIngredients.isNotEmpty) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        setState(() => _selectedIngredient = availableIngredients.first);
+      });
+    }
+
     return SingleChildScrollView(
       padding: EdgeInsets.only(
         left: 16,
@@ -149,7 +157,9 @@ class _RecipeItemEditSheetState extends State<RecipeItemEditSheet> {
             else
               FormBuilderDropdown<Ingredient>(
                 name: 'ingredient_select',
-                initialValue: _selectedIngredient,
+                initialValue: availableIngredients.contains(_selectedIngredient)
+                    ? _selectedIngredient
+                    : null,
                 decoration: const InputDecoration(
                   labelText: 'Ingrediente',
                   hintText: 'Selecione um ingrediente',
@@ -198,61 +208,10 @@ class _RecipeItemEditSheetState extends State<RecipeItemEditSheet> {
                 return null;
               },
             ),
-            Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: AppColors.surfaceVariant,
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Column(
-                spacing: 8,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('Unidade:', style: theme.textTheme.bodyMedium),
-                      Text(
-                        _selectedIngredient.unitLabel,
-                        style: theme.textTheme.bodyMedium?.copyWith(
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Custo unitário:',
-                        style: theme.textTheme.bodyMedium,
-                      ),
-                      Text(
-                        'R\$ ${_selectedIngredient.costPerUnit.toStringAsFixed(2)}',
-                        style: theme.textTheme.bodyMedium?.copyWith(
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const Divider(),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Custo total na receita:',
-                        style: theme.textTheme.titleSmall,
-                      ),
-                      Text(
-                        'R\$ ${(_selectedIngredient.costPerUnit * _quantity).toStringAsFixed(2)}',
-                        style: theme.textTheme.titleSmall?.copyWith(
-                          color: AppColors.brandAccent,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+            IngredientTotalRecipe(
+              selectedIngredient: _selectedIngredient,
+              theme: theme,
+              quantity: _quantity,
             ),
             Row(
               spacing: 12,
