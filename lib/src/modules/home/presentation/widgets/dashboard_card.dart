@@ -34,13 +34,13 @@ class DashboardCard extends StatelessWidget {
                 Row(
                   children: [Icon(icon), const SizedBox(width: 8), Text(title)],
                 ),
-                const SizedBox(height: 8),
+                /* const SizedBox(height: 8),
                 Text(
                   subtitle,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: Theme.of(context).colorScheme.onSurfaceVariant,
                   ),
-                ),
+                ),*/
                 const SizedBox(height: 12),
                 Text(
                   value,

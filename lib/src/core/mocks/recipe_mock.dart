@@ -1,21 +1,44 @@
+import 'package:reseller/src/core/mocks/ingredients_mock.dart';
 import 'package:reseller/src/modules/recipes/domain/entities/recipe.dart';
 
-// ignore: constant_identifier_names
-const Map<String, Recipe> RECIPES_MOCK = {
-  '1': Recipe(title: 'Pizza', description: 'some pizza', ingredientsIds: []),
+// ignore: non_constant_identifier_names
+final Map<String, Recipe> RECIPES_MOCK = {
+  '1': Recipe(
+    id: '1',
+    name: 'Pizza',
+    yieldRecipe: 2.0,
+    imagePath: "https://picsum.photos/400/280",
+    items: [
+      RecipeItem(ingredient: INGREDIENTS_MOCK['1']!, quantity: 2.0),
+      RecipeItem(ingredient: INGREDIENTS_MOCK['2']!, quantity: 5.0),
+    ],
+  ),
   '2': Recipe(
-    title: 'Chocolate Cake',
-    description: 'Rich and moist chocolate cake',
-    ingredientsIds: ["2"],
+    id: '2',
+    name: 'Chocolate Cake',
+    yieldRecipe: 8.0,
+    imagePath: "assets/images/chocolate_cake.png",
+    items: [
+      RecipeItem(ingredient: INGREDIENTS_MOCK['2']!, quantity: 250.0),
+      RecipeItem(ingredient: INGREDIENTS_MOCK['3']!, quantity: 200.0),
+    ],
   ),
   '3': Recipe(
-    title: 'Pasta Carbonara',
-    description: 'Classic Italian pasta dish',
-    ingredientsIds: ["1"],
+    id: '3',
+    name: 'Pasta Carbonara',
+    yieldRecipe: 4.0,
+    items: [
+      RecipeItem(ingredient: INGREDIENTS_MOCK['1']!, quantity: 400.0),
+      RecipeItem(ingredient: INGREDIENTS_MOCK['4']!, quantity: 150.0),
+    ],
   ),
   '4': Recipe(
-    title: 'Caesar Salad',
-    description: 'Fresh green salad with croutons',
-    ingredientsIds: ["1", "2"],
+    id: '4',
+    name: 'Caesar Salad',
+    yieldRecipe: 2.0,
+    items: [
+      RecipeItem(ingredient: INGREDIENTS_MOCK['1']!, quantity: 300.0),
+      RecipeItem(ingredient: INGREDIENTS_MOCK['2']!, quantity: 200.0),
+    ],
   ),
 };

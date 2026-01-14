@@ -18,4 +18,20 @@ Map<String, Ingredient> INGREDIENTS_MOCK = {
     unitLabel: 'kg',
     costPerUnit: 1.5,
   ),
+  '3': Ingredient(
+    id: '3',
+    name: 'Flour',
+    quantity: 5.0,
+    totalCost: 7.5,
+    unitLabel: 'kg',
+    costPerUnit: 1.5,
+  ),
+  '4': Ingredient(
+    id: '4',
+    name: 'Eggs',
+    quantity: 10.0,
+    totalCost: 4.0,
+    unitLabel: 'units',
+    costPerUnit: 0.4,
+  ),
 };

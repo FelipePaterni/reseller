@@ -1,36 +1,40 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:reseller/src/core/theme/app_colors.dart';
+import 'package:reseller/src/modules/recipes/domain/entities/recipe.dart';
 
 class CardRecipe extends StatelessWidget {
-  final String title;
-  final String content;
-  final String? imagePath;
+  final Recipe recipe;
   final IconData? icon;
   final Color? iconColor;
   final Color? iconBackgroundColor;
   final Function? onTap;
 
   /// Constructor para uso com imagem (URL ou asset)
-  const CardRecipe.image({
-    super.key,
-    required this.imagePath,
-    required this.title,
-    required this.content,
-    this.onTap,
-  }) : icon = null,
-       iconColor = null,
-       iconBackgroundColor = null;
+  const CardRecipe.image({super.key, required this.recipe, this.onTap})
+    : icon = null,
+      iconColor = null,
+      iconBackgroundColor = null;
 
   /// Constructor para uso com ícone
   const CardRecipe.icon({
     super.key,
     required this.icon,
-    required this.title,
-    required this.content,
+    required this.recipe,
     this.onTap,
     this.iconColor,
     this.iconBackgroundColor,
-  }) : imagePath = null;
+  });
+
+  const CardRecipe({
+    super.key,
+    this.icon,
+    required this.recipe,
+    this.onTap,
+    this.iconColor,
+    this.iconBackgroundColor,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -44,27 +48,11 @@ class CardRecipe extends StatelessWidget {
             mainAxisSize: MainAxisSize.max,
             children: [
               _buildLeadingWidget(context),
-              Expanded(
-                child: Column(
-                  spacing: 8,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      title,
-                      style: Theme.of(context).textTheme.headlineSmall
-                          ?.copyWith(
-                            color: Theme.of(context).colorScheme.primary,
-                            fontWeight: FontWeight.bold,
-                          ),
-                    ),
-                    Text(
-                      content,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: Theme.of(context).colorScheme.onSurfaceVariant,
-                      ),
-                    ),
-                  ],
+              Text(
+                recipe.name,
+                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                  color: Theme.of(context).colorScheme.primary,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ],
@@ -75,6 +63,18 @@ class CardRecipe extends StatelessWidget {
   }
 
   Widget _buildLeadingWidget(BuildContext context) {
+    // Se tem imagem, renderiza a imagem com suporte a URL ou asset
+    if (recipe.imagePath.isNotEmpty) {
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(12),
+        child: SizedBox(
+          width: 48,
+          height: 48,
+          child: _buildImage(recipe.imagePath),
+        ),
+      );
+    }
+
     // Se tem ícone, renderiza o ícone
     if (icon != null) {
       return Container(
@@ -85,14 +85,6 @@ class CardRecipe extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
         ),
         child: Icon(icon, size: 28, color: iconColor ?? AppColors.brandAccent),
-      );
-    }
-
-    // Se tem imagem, renderiza a imagem com suporte a URL ou asset
-    if (imagePath != null && imagePath!.isNotEmpty) {
-      return ClipRRect(
-        borderRadius: BorderRadius.circular(12),
-        child: SizedBox(width: 48, height: 48, child: _buildImage(imagePath!)),
       );
     }
 
@@ -144,8 +136,8 @@ class CardRecipe extends StatelessWidget {
     }
 
     // Caso contrário, trata como asset local
-    return Image.asset(
-      path,
+    return Image.file(
+      File(path),
       fit: BoxFit.cover,
       errorBuilder: (context, error, stackTrace) {
         return Container(

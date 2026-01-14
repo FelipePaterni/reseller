@@ -1,43 +1,49 @@
-import 'package:flutter/material.dart';
+import 'package:reseller/src/modules/ingredients/domain/entities/ingredient.dart';
 
-/// Recipe entity
-/// Represents a recipe with its details.
-///
-/// [id] - Unique identifier for the recipe **(auto-generated)**.
-///
-/// [icon] - Icon representing the recipe (in the future can be an image).
-///
-/// [title] - Title of the recipe.
-///
-/// [description] - Description of the recipe.
-///
-/// [ingredientsIds] - List of ingredient IDs required for the recipe.
-///
-/// Example:
-/// ```dart
-/// const recipe = Recipe(
-///   id: '1',
-///   icon: Icons.fastfood,
-///   title: 'Pasta',
-///   description: 'Delicious pasta recipe',
-///   ingredientsIds: [
-///     '1',
-///     '2',
-///   ],
-/// );
-/// ```
-interface class Recipe {
+class Recipe {
   final String? id;
-  final IconData? icon;
-  final String title;
-  final String description;
-  final List<String> ingredientsIds;
+  final String imagePath;
+  final String name;
+  final double yieldRecipe;
+  final List<RecipeItem> items;
 
-  const Recipe({
+  Recipe({
     this.id,
-    this.icon,
-    required this.title,
-    required this.description,
-    required this.ingredientsIds,
+    this.imagePath = '',
+    this.name = '',
+    this.yieldRecipe = 1.0,
+    this.items = const [],
   });
+
+  Recipe copyWith({
+    String? id,
+    String? imagePath,
+    String? name,
+    double? yieldRecipe,
+    List<RecipeItem>? items,
+  }) {
+    return Recipe(
+      id: id ?? this.id,
+      imagePath: imagePath ?? this.imagePath,
+      name: name ?? this.name,
+      yieldRecipe: yieldRecipe ?? this.yieldRecipe,
+      items: items ?? this.items,
+    );
+  }
+}
+
+class RecipeItem {
+  final Ingredient ingredient;
+  final double quantity;
+
+  RecipeItem({required this.ingredient, required this.quantity});
+
+  double get totalCost => ingredient.costPerUnit * quantity;
+
+  RecipeItem copyWith({Ingredient? ingredient, double? quantity}) {
+    return RecipeItem(
+      ingredient: ingredient ?? this.ingredient,
+      quantity: quantity ?? this.quantity,
+    );
+  }
 }

@@ -25,47 +25,28 @@
 /// );
 /// ```
 class Ingredient {
-  String? _id;
-  String _name;
+  String? id;
+  String name;
+  String unitLabel;
   double _quantity;
   double _totalCost;
-  String _unitLabel;
   double _costPerUnit;
 
   Ingredient({
-    String? id,
-    String name = "",
+    this.id,
+    this.name = "",
+    this.unitLabel = "",
     double quantity = 0,
     double totalCost = 0,
-    String unitLabel = "",
+
     double costPerUnit = 0,
-  }) : _id = id,
-       _name = name,
-       _quantity = quantity,
+  }) : _quantity = quantity,
        _totalCost = totalCost,
-       _unitLabel = unitLabel,
        _costPerUnit = costPerUnit;
 
-  // Getters
-  String? get id => _id;
-  String get name => _name;
   double get quantity => _quantity;
   double get totalCost => _totalCost;
-  String get unitLabel => _unitLabel;
   double get costPerUnit => _costPerUnit;
-
-  // Setters
-  set id(String? value) {
-    _id = value;
-  }
-
-  set name(String value) {
-    _name = value;
-  }
-
-  set unitLabel(String value) {
-    _unitLabel = value;
-  }
 
   set quantity(double value) {
     _quantity = value;
@@ -82,7 +63,14 @@ class Ingredient {
     _costPerUnit = (_costPerUnit * 100).round() / 100;
   }
 
-  void recalculateCostPerUnit() {
-    _recalculateCostPerUnit();
+  factory Ingredient.empty() {
+    return Ingredient(
+      id: null,
+      name: "",
+      unitLabel: "",
+      quantity: 0,
+      totalCost: 0,
+      costPerUnit: 0,
+    );
   }
 }

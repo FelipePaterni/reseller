@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:reseller/src/app/main_shell.dart';
 import 'package:reseller/src/app/router/routes.dart';
-import 'package:reseller/src/modules/recipes/domain/entities/recipe.dart';
 import 'package:reseller/src/modules/recipes/presentation/pages/recipe_info.dart';
 
 abstract class AppRouter {
@@ -10,8 +9,8 @@ abstract class AppRouter {
       case Routes.mainShell:
         return _page(const MainShell());
       case Routes.recipesInfo:
-        final recipe = settings.arguments as Recipe;
-        return _page(RecipeInfo(recipe: recipe));
+        final recipeId = settings.arguments as String;
+        return _page(RecipeInfo(recipeId: recipeId));
       default:
         return _page(null);
     }

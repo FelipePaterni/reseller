@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:reseller/src/modules/ingredients/domain/entities/ingredient.dart';
 import 'package:provider/provider.dart';
-import 'package:reseller/src/modules/ingredients/data/provider/ingredients_provider.dart';
+import 'package:reseller/src/modules/ingredients/presentation/provider/ingredients_provider.dart';
 import 'package:reseller/src/modules/ingredients/presentation/widgets/calculated_cost_display.dart';
 
 class IngredientEditSheet extends StatefulWidget {
@@ -16,7 +16,6 @@ class IngredientEditSheet extends StatefulWidget {
 
 class _IngredientEditSheetState extends State<IngredientEditSheet> {
   final _formKey = GlobalKey<FormBuilderState>();
-  //  final Map<String, dynamic> _formData = {};
   static const List<String> _unitOptions = <String>['kg', 'g', 'un', 'ml', 'l'];
 
   @override
@@ -42,7 +41,9 @@ class _IngredientEditSheetState extends State<IngredientEditSheet> {
               mainAxisSize: MainAxisSize.max,
               children: [
                 Text(
-                  'Editar Ingrediente',
+                  widget.ingredient.id != null
+                      ? 'Editar Ingrediente'
+                      : 'Adicionar Ingrediente',
                   style: theme.textTheme.titleMedium?.copyWith(
                     color: colorScheme.onSurface,
                     fontWeight: FontWeight.w700,
@@ -141,7 +142,7 @@ class _IngredientEditSheetState extends State<IngredientEditSheet> {
                         Provider.of<IngredientsProvider>(
                           context,
                           listen: false,
-                        ).put(widget.ingredient);
+                        ).createOrUpdate(widget.ingredient);
                         Navigator.of(context).maybePop();
                       }
                     },
