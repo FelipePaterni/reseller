@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:reseller/src/core/theme/app_colors.dart';
 import 'package:reseller/src/modules/recipes/domain/entities/recipe.dart';
-import 'package:reseller/src/modules/recipes/presentation/widgets/tabel_tab.dart';
+import 'package:reseller/src/modules/recipes/presentation/widgets/table_tab.dart';
 import 'package:reseller/src/modules/recipes/presentation/widgets/top_image.dart';
 import 'package:reseller/src/shared/widgets/draggable_bottom.dart';
 import 'package:reseller/src/shared/widgets/tab_item.dart';

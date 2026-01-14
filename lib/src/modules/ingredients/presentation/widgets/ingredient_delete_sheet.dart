@@ -80,11 +80,15 @@ class IngredientDeleteSheet extends StatelessWidget {
                     elevation: 0,
                   ),
                   onPressed: () {
+                    final id = ingredient.id;
+                    if (id == null) {
+                      return;
+                    }
                     Navigator.of(context).pop(ingredient);
                     Provider.of<IngredientsProvider>(
                       context,
                       listen: false,
-                    ).deleteById(ingredient.id!);
+                    ).deleteById(id);
                   },
                   child: Text(
                     'Excluir',

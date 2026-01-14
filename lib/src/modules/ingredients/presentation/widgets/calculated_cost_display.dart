@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 class CalculatedCostDisplay extends StatelessWidget {
   final double costPerUnit;
   final String unitLabel;
@@ -43,11 +42,11 @@ class CalculatedCostDisplay extends StatelessWidget {
                   letterSpacing: 0.5,
                 ),
               ),
-              const SizedBox(height: 4),
+              const SizedBox(height: 8),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.baseline,
                 textBaseline: TextBaseline.alphabetic,
-                spacing: 4,
+                spacing: 8,
                 children: [
                   Text(
                     'R\$ ${costPerUnit.toStringAsFixed(2)}',

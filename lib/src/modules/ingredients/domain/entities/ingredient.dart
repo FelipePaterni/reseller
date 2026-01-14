@@ -63,8 +63,14 @@ class Ingredient {
     _costPerUnit = (_costPerUnit * 100).round() / 100;
   }
 
-  void recalculateCostPerUnit() {
-    _recalculateCostPerUnit();
+  factory Ingredient.empty() {
+    return Ingredient(
+      id: null,
+      name: "",
+      unitLabel: "",
+      quantity: 0,
+      totalCost: 0,
+      costPerUnit: 0,
+    );
   }
-
 }

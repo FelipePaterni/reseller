@@ -46,7 +46,7 @@ class IngredientList extends StatelessWidget {
           spacing: 16,
           children: [
             ElevatedButton.icon(
-              onPressed: () => _openModal(context, Ingredient()),
+              onPressed: () => _openModal(context, Ingredient.empty()),
               icon: const Icon(Icons.add),
               label: const Text("Novo Ingrediente"),
             ),

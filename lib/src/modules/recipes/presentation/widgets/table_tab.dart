@@ -18,7 +18,7 @@ class TableTab extends StatelessWidget {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.only(left: 9, right: 9, top: 20, bottom: 0),
+          padding: const EdgeInsets.only(left: 8, right: 8, top: 24, bottom: 0),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.end,
             mainAxisSize: MainAxisSize.max,

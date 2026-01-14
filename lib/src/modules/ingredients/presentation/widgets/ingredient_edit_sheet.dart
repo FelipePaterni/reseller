@@ -16,7 +16,6 @@ class IngredientEditSheet extends StatefulWidget {
 
 class _IngredientEditSheetState extends State<IngredientEditSheet> {
   final _formKey = GlobalKey<FormBuilderState>();
-  //  final Map<String, dynamic> _formData = {};
   static const List<String> _unitOptions = <String>['kg', 'g', 'un', 'ml', 'l'];
 
   @override
