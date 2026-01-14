@@ -58,7 +58,7 @@ class TableTab extends StatelessWidget {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.only(left: 8, right: 8, top: 24, bottom: 0),
+          padding: const EdgeInsets.all(16.0),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.end,
             mainAxisSize: MainAxisSize.max,
@@ -86,7 +86,7 @@ class TableTab extends StatelessWidget {
           ),
         ),
         Expanded(
-          flex: 3,
+          flex: 1,
           child: items.isEmpty
               ? Center(
                   child: Text(
@@ -98,6 +98,7 @@ class TableTab extends StatelessWidget {
                 )
               : ListView.builder(
                   controller: scrollController,
+                  padding: EdgeInsets.zero,
                   itemCount: items.length,
                   itemBuilder: (context, index) => Card(
                     child: Padding(

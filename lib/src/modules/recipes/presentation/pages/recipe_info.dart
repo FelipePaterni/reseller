@@ -17,7 +17,22 @@ class RecipeInfo extends StatefulWidget {
   State<RecipeInfo> createState() => _RecipeInfoState();
 }
 
-class _RecipeInfoState extends State<RecipeInfo> {
+class _RecipeInfoState extends State<RecipeInfo>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 2, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
   void _showAddRecipeItemSheet() {
     showModalBottomSheet(
       context: context,
@@ -48,28 +63,31 @@ class _RecipeInfoState extends State<RecipeInfo> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        floatingActionButton: FloatingActionButton(
-          onPressed: _showAddRecipeItemSheet,
-          tooltip: 'Adicionar ingrediente',
-          child: const Icon(Icons.add),
+        extendBodyBehindAppBar: true,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          leading: IconButton(
+            onPressed: () {
+              Navigator.of(context).maybePop();
+            },
+            style: IconButton.styleFrom(backgroundColor: AppColors.brandAccent),
+            icon: Icon(Icons.arrow_back),
+            alignment: Alignment.topLeft,
+            color: AppColors.textInverted,
+          ),
         ),
+        floatingActionButton: _tabController.index == 1
+            ? FloatingActionButton(
+                onPressed: _showAddRecipeItemSheet,
+                tooltip: 'Adicionar ingrediente',
+                child: const Icon(Icons.add),
+              )
+            : null,
         body: SizedBox.expand(
           child: Stack(
             children: [
               TopImage(imagePath: recipe.imagePath),
-              SafeArea(
-                child: IconButton(
-                  onPressed: () {
-                    Navigator.of(context).maybePop();
-                  },
-                  style: IconButton.styleFrom(
-                    backgroundColor: AppColors.brandAccent,
-                  ),
-                  icon: Icon(Icons.arrow_back),
-                  alignment: Alignment.topLeft,
-                  color: AppColors.textInverted,
-                ),
-              ),
               Container(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
@@ -95,6 +113,7 @@ class _RecipeInfoState extends State<RecipeInfo> {
                           color: AppColors.surfaceVariant,
                         ),
                         child: TabBar(
+                          controller: _tabController,
                           padding: const EdgeInsets.all(6),
                           indicatorSize: TabBarIndicatorSize.tab,
                           indicator: BoxDecoration(
@@ -104,6 +123,9 @@ class _RecipeInfoState extends State<RecipeInfo> {
                             ),
                           ),
                           dividerColor: Colors.transparent,
+                          onTap: (index) {
+                            setState(() {});
+                          },
                           tabs: [
                             TabItem(title: 'Informações'),
                             TabItem(title: 'Ingredientes'),
@@ -115,6 +137,7 @@ class _RecipeInfoState extends State<RecipeInfo> {
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8.0),
                         child: TabBarView(
+                          controller: _tabController,
                           children: [
                             Text("EM construction"),
                             TableTab.ingredient(

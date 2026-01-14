@@ -1,24 +1,21 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:reseller/src/core/theme/app_colors.dart';
 import 'package:reseller/src/modules/recipes/domain/entities/recipe.dart';
 
 class CardRecipe extends StatelessWidget {
   final Recipe recipe;
-  final String? imagePath;
   final IconData? icon;
   final Color? iconColor;
   final Color? iconBackgroundColor;
   final Function? onTap;
 
   /// Constructor para uso com imagem (URL ou asset)
-  const CardRecipe.image({
-    super.key,
-    required this.imagePath,
-    required this.recipe,
-    this.onTap,
-  }) : icon = null,
-       iconColor = null,
-       iconBackgroundColor = null;
+  const CardRecipe.image({super.key, required this.recipe, this.onTap})
+    : icon = null,
+      iconColor = null,
+      iconBackgroundColor = null;
 
   /// Constructor para uso com ícone
   const CardRecipe.icon({
@@ -28,7 +25,16 @@ class CardRecipe extends StatelessWidget {
     this.onTap,
     this.iconColor,
     this.iconBackgroundColor,
-  }) : imagePath = null;
+  });
+
+  const CardRecipe({
+    super.key,
+    this.icon,
+    required this.recipe,
+    this.onTap,
+    this.iconColor,
+    this.iconBackgroundColor,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -57,6 +63,18 @@ class CardRecipe extends StatelessWidget {
   }
 
   Widget _buildLeadingWidget(BuildContext context) {
+    // Se tem imagem, renderiza a imagem com suporte a URL ou asset
+    if (recipe.imagePath.isNotEmpty) {
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(12),
+        child: SizedBox(
+          width: 48,
+          height: 48,
+          child: _buildImage(recipe.imagePath),
+        ),
+      );
+    }
+
     // Se tem ícone, renderiza o ícone
     if (icon != null) {
       return Container(
@@ -67,14 +85,6 @@ class CardRecipe extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
         ),
         child: Icon(icon, size: 28, color: iconColor ?? AppColors.brandAccent),
-      );
-    }
-
-    // Se tem imagem, renderiza a imagem com suporte a URL ou asset
-    if (imagePath != null && imagePath!.isNotEmpty) {
-      return ClipRRect(
-        borderRadius: BorderRadius.circular(12),
-        child: SizedBox(width: 48, height: 48, child: _buildImage(imagePath!)),
       );
     }
 
@@ -126,8 +136,8 @@ class CardRecipe extends StatelessWidget {
     }
 
     // Caso contrário, trata como asset local
-    return Image.asset(
-      path,
+    return Image.file(
+      File(path),
       fit: BoxFit.cover,
       errorBuilder: (context, error, stackTrace) {
         return Container(

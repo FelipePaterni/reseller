@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:provider/provider.dart';
 import 'package:reseller/src/modules/home/presentation/widgets/dashboard_card.dart';
+import 'package:reseller/src/modules/recipes/presentation/provider/recipes_provider.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});
@@ -9,33 +11,27 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Column(
+        mainAxisSize: MainAxisSize.max,
+        spacing: 16,
         children: [
+          Text('Resumo', style: Theme.of(context).textTheme.headlineMedium),
           StaggeredGrid.count(
             crossAxisCount: 2,
             mainAxisSpacing: 16,
             crossAxisSpacing: 16,
             children: [
               DashboardCard(
-                crossAxisCellCount: 2,
-                onClick: () {},
-                icon: Icons.read_more,
-                title: "aa",
-                subtitle: "bb",
-                value: "1",
-              ),
-
-              DashboardCard(
                 crossAxisCellCount: 1,
-                icon: Icons.read_more,
-                title: "aa",
-                subtitle: "bb",
-                value: "1",
+                icon: Icons.book,
+                title: "Receitas",
+                subtitle: "Total de receitas:",
+                value: context.watch<RecipesProvider>().count.toString(),
               ),
               DashboardCard(
                 crossAxisCellCount: 1,
-                icon: Icons.read_more,
-                title: "aa",
-                subtitle: "bb",
+                icon: Icons.kitchen,
+                title: "Ingredientes",
+                subtitle: "Total",
                 value: "1",
               ),
             ],

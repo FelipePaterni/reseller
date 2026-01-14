@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:reseller/src/app/router/routes.dart';
 import 'package:reseller/src/modules/recipes/presentation/provider/recipes_provider.dart';
 import 'package:reseller/src/modules/recipes/presentation/widgets/card_recipe.dart';
-import 'package:reseller/src/shared/widgets/modal.dart';
+import 'package:reseller/src/modules/recipes/presentation/widgets/recipe_edit_sheet.dart';
 
 class RecipeList extends StatelessWidget {
   const RecipeList({super.key});
@@ -17,10 +17,7 @@ class RecipeList extends StatelessWidget {
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(22)),
       ),
-      builder: (sheetContext) => Modal(
-        title: "Adicionar",
-        child: const Text("Funcionalidade em construção"),
-      ),
+      builder: (sheetContext) => const RecipeEditSheet(),
     );
   }
 
@@ -48,7 +45,7 @@ class RecipeList extends StatelessWidget {
                       final recipe = provider.all[index];
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: CardRecipe.icon(
+                        child: CardRecipe(
                           icon: Icons.restaurant,
                           recipe: recipe,
                           onTap: () => Navigator.pushNamed(
