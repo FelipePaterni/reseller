@@ -37,10 +37,6 @@ class IngredientList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final IngredientsProvider ingredients = Provider.of<IngredientsProvider>(
-      context,
-    );
-
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8),

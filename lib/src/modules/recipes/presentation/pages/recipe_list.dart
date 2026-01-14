@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:reseller/src/app/router/routes.dart';
-import 'package:reseller/src/core/mocks/recipe_mock.dart';
-import 'package:reseller/src/modules/recipes/domain/entities/recipe.dart';
+import 'package:reseller/src/modules/recipes/presentation/provider/recipes_provider.dart';
 import 'package:reseller/src/modules/recipes/presentation/widgets/card_recipe.dart';
 import 'package:reseller/src/shared/widgets/modal.dart';
 
 class RecipeList extends StatelessWidget {
   const RecipeList({super.key});
-
-  static final List<Recipe> recipes = [...RECIPES_MOCK.values];
-
   void _openModal(BuildContext context) {
     showModalBottomSheet<void>(
       context: context,
@@ -35,7 +32,7 @@ class RecipeList extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.end,
-          spacing: 16,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             ElevatedButton.icon(
               onPressed: () => _openModal(context),
@@ -43,21 +40,25 @@ class RecipeList extends StatelessWidget {
               label: const Text("Nova receita"),
             ),
             Expanded(
-              child: ListView.builder(
-                itemCount: recipes.length,
-                itemBuilder: (context, index) {
-                  final recipe = recipes[index];
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: CardRecipe.icon(
-                      icon: Icons.restaurant,
-                      recipe: recipe,
-                      onTap: () => Navigator.pushNamed(
-                        context,
-                        Routes.recipesInfo,
-                        arguments: recipe,
-                      ),
-                    ),
+              child: Consumer<RecipesProvider>(
+                builder: (context, provider, _) {
+                  return ListView.builder(
+                    itemCount: provider.count,
+                    itemBuilder: (context, index) {
+                      final recipe = provider.all[index];
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: CardRecipe.icon(
+                          icon: Icons.restaurant,
+                          recipe: recipe,
+                          onTap: () => Navigator.pushNamed(
+                            context,
+                            Routes.recipesInfo,
+                            arguments: recipe.id,
+                          ),
+                        ),
+                      );
+                    },
                   );
                 },
               ),

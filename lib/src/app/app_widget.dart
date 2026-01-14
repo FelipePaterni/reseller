@@ -16,7 +16,13 @@ class AppWidget extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (ctx) => IngredientsProvider()),
-        ChangeNotifierProvider(create: (ctx) => RecipesProvider(RecipesRepositoryMock())),
+        ChangeNotifierProvider(
+          create: (ctx) {
+            final provider = RecipesProvider(RecipesRepositoryMock());
+            provider.load();
+            return provider;
+          },
+        ),
       ],
       child: MaterialApp(
         title: AppConstants.appTitle,

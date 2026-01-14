@@ -13,11 +13,11 @@ class RecipesProvider with ChangeNotifier {
 
   int get count => _recipes.length;
 
-  Recipe? getById(String id) {
+  Recipe getById(String id) {
     try {
       return _recipes.firstWhere((r) => r.id == id);
     } catch (e) {
-      return null;
+      throw Exception('Recipe with id $id not found');
     }
   }
 
@@ -46,5 +46,39 @@ class RecipesProvider with ChangeNotifier {
   Future<void> deleteByObject(Recipe recipe) async {
     if (recipe.id == null || recipe.id!.isEmpty) return;
     await deleteById(recipe.id!);
+  }
+
+  /// Add a new recipe item to a recipe
+  Future<void> addRecipeItem(String recipeId, RecipeItem item) async {
+    final recipe = getById(recipeId);
+    final updatedItems = [...recipe.items, item];
+    final updatedRecipe = recipe.copyWith(items: updatedItems);
+    await createOrUpdate(updatedRecipe);
+  }
+
+  /// Update an existing recipe item in a recipe
+  Future<void> updateRecipeItem(
+    String recipeId,
+    int itemIndex,
+    RecipeItem newItem,
+  ) async {
+    final recipe = getById(recipeId);
+    final updatedItems = [...recipe.items];
+    if (itemIndex >= 0 && itemIndex < updatedItems.length) {
+      updatedItems[itemIndex] = newItem;
+      final updatedRecipe = recipe.copyWith(items: updatedItems);
+      await createOrUpdate(updatedRecipe);
+    }
+  }
+
+  /// Remove a recipe item from a recipe
+  Future<void> removeRecipeItem(String recipeId, int itemIndex) async {
+    final recipe = getById(recipeId);
+    final updatedItems = [...recipe.items];
+    if (itemIndex >= 0 && itemIndex < updatedItems.length) {
+      updatedItems.removeAt(itemIndex);
+      final updatedRecipe = recipe.copyWith(items: updatedItems);
+      await createOrUpdate(updatedRecipe);
+    }
   }
 }
