@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:reseller/src/modules/recipes/presentation/widgets/dinamic_image.dart';
+import 'package:reseller/src/modules/recipes/presentation/widgets/dynamic_image.dart';
 
 class TopImage extends StatelessWidget {
   final String? imagePath;
@@ -21,7 +21,7 @@ class TopImage extends StatelessWidget {
     return SizedBox(
       height: MediaQuery.of(context).size.height / 2,
       width: double.infinity,
-      child: DinamicImage(
+      child: DynamicImage(
         source: imagePath,
         icon: icon,
         iconColor: iconColor,

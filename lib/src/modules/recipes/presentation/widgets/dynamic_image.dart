@@ -6,7 +6,7 @@ import 'package:reseller/src/core/theme/app_colors.dart';
 /// Enum para definir o tipo de conteúdo
 enum ContentType { image, icon, auto }
 
-class DinamicImage extends StatelessWidget {
+class DynamicImage extends StatelessWidget {
   final String? source;
   final IconData? icon;
   final ContentType type;
@@ -19,7 +19,7 @@ class DinamicImage extends StatelessWidget {
   final BorderRadius? borderRadius;
 
   /// Constructor padrão com detecção automática de tipo
-  const DinamicImage({
+  const DynamicImage({
     super.key,
     this.source,
     this.icon,
@@ -34,7 +34,7 @@ class DinamicImage extends StatelessWidget {
   });
 
   /// Constructor para uso com imagem URL ou asset
-  const DinamicImage.image({
+  const DynamicImage.image({
     super.key,
     required this.source,
     this.height,
@@ -48,7 +48,7 @@ class DinamicImage extends StatelessWidget {
        iconSize = 120;
 
   /// Constructor para uso com ícone
-  const DinamicImage.icon({
+  const DynamicImage.icon({
     super.key,
     required this.icon,
     this.iconColor,

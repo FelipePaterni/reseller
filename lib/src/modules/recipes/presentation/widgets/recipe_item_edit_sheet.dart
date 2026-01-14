@@ -43,6 +43,31 @@ class _RecipeItemEditSheetState extends State<RecipeItemEditSheet> {
     }
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final allIngredients = context.read<IngredientsProvider>().getAll;
+
+    // Get IDs of ingredients already in the recipe (excluding current one if editing)
+    final usedIngredientIds = widget.currentItems
+        .asMap()
+        .entries
+        .where((entry) => entry.key != widget.itemIndex)
+        .map((entry) => entry.value.ingredient.id)
+        .toSet();
+
+    // Filter ingredients to show only those not yet added
+    final availableIngredients = allIngredients
+        .where((ingredient) => !usedIngredientIds.contains(ingredient.id))
+        .toList();
+
+    // Reset _selectedIngredient if it's no longer available
+    if (!availableIngredients.contains(_selectedIngredient) &&
+        availableIngredients.isNotEmpty) {
+      setState(() => _selectedIngredient = availableIngredients.first);
+    }
+  }
+
   Future<void> _saveRecipeItem() async {
     if (_formKey.currentState?.saveAndValidate() ?? false) {
       setState(() => _isLoading = true);
@@ -104,14 +129,6 @@ class _RecipeItemEditSheetState extends State<RecipeItemEditSheet> {
     final availableIngredients = allIngredients
         .where((ingredient) => !usedIngredientIds.contains(ingredient.id))
         .toList();
-
-    // Ensure _selectedIngredient is in availableIngredients
-    if (!availableIngredients.contains(_selectedIngredient) &&
-        availableIngredients.isNotEmpty) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        setState(() => _selectedIngredient = availableIngredients.first);
-      });
-    }
 
     return SingleChildScrollView(
       padding: EdgeInsets.only(

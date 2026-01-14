@@ -39,24 +39,32 @@ class RecipeList extends StatelessWidget {
             Expanded(
               child: Consumer<RecipesProvider>(
                 builder: (context, provider, _) {
-                  return ListView.builder(
-                    itemCount: provider.count,
-                    itemBuilder: (context, index) {
-                      final recipe = provider.all[index];
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: CardRecipe(
-                          icon: Icons.restaurant,
-                          recipe: recipe,
-                          onTap: () => Navigator.pushNamed(
-                            context,
-                            Routes.recipesInfo,
-                            arguments: recipe.id,
+                  return provider.all.isEmpty
+                      ? Center(
+                          child: Text(
+                            'Nenhuma receita encontrada.\nClique em "Nova receita" para adicionar uma.',
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context).textTheme.bodyMedium,
                           ),
-                        ),
-                      );
-                    },
-                  );
+                        )
+                      : ListView.builder(
+                          itemCount: provider.count,
+                          itemBuilder: (context, index) {
+                            final recipe = provider.all[index];
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: CardRecipe(
+                                icon: Icons.restaurant,
+                                recipe: recipe,
+                                onTap: () => Navigator.pushNamed(
+                                  context,
+                                  Routes.recipesInfo,
+                                  arguments: recipe.id,
+                                ),
+                              ),
+                            );
+                          },
+                        );
                 },
               ),
             ),
