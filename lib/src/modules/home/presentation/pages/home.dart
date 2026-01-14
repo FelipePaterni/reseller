@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:provider/provider.dart';
 import 'package:reseller/src/modules/home/presentation/widgets/dashboard_card.dart';
+import 'package:reseller/src/modules/ingredients/presentation/provider/ingredients_provider.dart';
 import 'package:reseller/src/modules/recipes/presentation/provider/recipes_provider.dart';
 
 class Home extends StatelessWidget {
@@ -32,7 +33,7 @@ class Home extends StatelessWidget {
                 icon: Icons.kitchen,
                 title: "Ingredientes",
                 subtitle: "Total",
-                value: "1",
+                value: context.watch<IngredientsProvider>().count.toString(),
               ),
             ],
           ),
