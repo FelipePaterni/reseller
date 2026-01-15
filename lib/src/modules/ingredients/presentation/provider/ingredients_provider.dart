@@ -1,64 +1,72 @@
 import 'package:flutter/material.dart';
-import 'package:reseller/src/core/mocks/ingredients_mock.dart';
 import 'package:reseller/src/modules/ingredients/domain/entities/ingredient.dart';
-import 'package:uuid/uuid.dart';
+import 'package:reseller/src/modules/ingredients/domain/repositories/ingredients_repository.dart';
 
 /// Provider for managing ingredients state
+///
+/// Delegates data operations to [IngredientsRepository] and manages UI state.
 class IngredientsProvider with ChangeNotifier {
-  final Map<String, Ingredient> _ingredients = {...INGREDIENTS_MOCK};
+  final IngredientsRepository _repository;
+  List<Ingredient> _ingredients = [];
+  bool _isLoading = false;
 
-  List<Ingredient> get getAll => [..._ingredients.values];
+  IngredientsProvider(this._repository) {
+    _loadIngredients();
+  }
+
+  List<Ingredient> get getAll => [..._ingredients];
 
   int get count => _ingredients.length;
 
-  Ingredient? getById(String id) => _ingredients[id];
+  bool get isLoading => _isLoading;
+
+  Ingredient? getById(String id) {
+    try {
+      return _ingredients.firstWhere((i) => i.id == id);
+    } catch (_) {
+      return null;
+    }
+  }
 
   Ingredient getByIndex(int index) {
     if (index < 0 || index >= _ingredients.length) {
       throw RangeError('Index out of range');
     }
-    return _ingredients.values.elementAt(index);
+    return _ingredients[index];
+  }
+
+  /// Load all ingredients from repository
+  Future<void> _loadIngredients() async {
+    _isLoading = true;
+    notifyListeners();
+
+    try {
+      _ingredients = await _repository.getAll();
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
   }
 
   /// Create or update an ingredient
   ///
   /// If the [ingredient] has an ID and exists, it updates it.
   /// Otherwise, it creates a new [ingredient] with a new ID.
-  void createOrUpdate(Ingredient ingredient) {
-    if (ingredient.id != null &&
-        ingredient.id!.isNotEmpty &&
-        _ingredients.containsKey(ingredient.id)) {
-      _ingredients[ingredient.id!] = ingredient;
-    } else {
-      final id = Uuid().v4();
-
-      _ingredients[id] = Ingredient(
-        id: id,
-        name: ingredient.name,
-        quantity: ingredient.quantity,
-        unitLabel: ingredient.unitLabel,
-        costPerUnit: ingredient.costPerUnit,
-        totalCost: ingredient.totalCost,
-      );
-    }
-    notifyListeners();
+  Future<void> createOrUpdate(Ingredient ingredient) async {
+    await _repository.save(ingredient);
+    await _loadIngredients();
   }
 
   /// Delete ingredient by ID
-  void deleteById(String id) {
-    if (_ingredients.containsKey(id)) {
-      _ingredients.remove(id);
-      notifyListeners();
-    }
+  Future<void> deleteById(String id) async {
+    await _repository.delete(id);
+    await _loadIngredients();
   }
 
   /// Delete ingredient by object
-  void deleteByObject(Ingredient ingredient) {
-    if (ingredient.id != null &&
-        ingredient.id!.isNotEmpty &&
-        _ingredients.containsKey(ingredient.id)) {
-      _ingredients.remove(ingredient.id);
-      notifyListeners();
+  Future<void> deleteByObject(Ingredient ingredient) async {
+    if (ingredient.id != null && ingredient.id!.isNotEmpty) {
+      await deleteById(ingredient.id!);
     }
   }
 }

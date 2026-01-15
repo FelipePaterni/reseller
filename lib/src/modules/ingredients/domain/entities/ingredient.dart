@@ -73,4 +73,22 @@ class Ingredient {
       costPerUnit: 0,
     );
   }
+
+  Ingredient copyWith({
+    String? id,
+    String? name,
+    String? unitLabel,
+    double? quantity,
+    double? totalCost,
+    double? costPerUnit,
+  }) {
+    return Ingredient(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      unitLabel: unitLabel ?? this.unitLabel,
+      quantity: quantity ?? this.quantity,
+      totalCost: totalCost ?? this.totalCost,
+      costPerUnit: costPerUnit ?? this.costPerUnit,
+    );
+  }
 }
