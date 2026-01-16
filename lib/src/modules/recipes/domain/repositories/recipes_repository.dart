@@ -5,4 +5,5 @@ abstract class RecipesRepository {
   Future<Recipe?> getById(String id);
   Future<void> save(Recipe recipe);
   Future<void> delete(String id);
+  Future<int> count();
 }

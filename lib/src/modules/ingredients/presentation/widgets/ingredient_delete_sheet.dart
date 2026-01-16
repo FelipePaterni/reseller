@@ -73,7 +73,7 @@ class IngredientDeleteSheet extends StatelessWidget {
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: colorScheme.error,
-                    foregroundColor: Colors.white,
+                    foregroundColor: colorScheme.onError,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(24),
                     ),
@@ -93,7 +93,7 @@ class IngredientDeleteSheet extends StatelessWidget {
                   child: Text(
                     'Excluir',
                     style: textTheme.labelLarge?.copyWith(
-                      color: Colors.white,
+                      color: colorScheme.onError,
                       fontSize: 18,
                     ),
                   ),

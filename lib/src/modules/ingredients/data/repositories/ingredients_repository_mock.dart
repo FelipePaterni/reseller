@@ -1,3 +1,15 @@
+/// ⚠️ DESCONTINUADO - Use IngredientsRepositoryImpl + IngredientsLocalDataSourceImpl
+///
+/// Este arquivo é mantido apenas para referência histórica.
+/// A implementação agora segue Clean Architecture com separação clara de responsabilidades.
+///
+/// Para usar a implementação correta:
+/// ```dart
+/// final dataSource = IngredientsLocalDataSourceImpl();
+/// final repository = IngredientsRepositoryImpl(dataSource: dataSource);
+/// final provider = IngredientsProvider(repository);
+/// ```
+
 import 'package:reseller/src/core/mocks/ingredients_mock.dart';
 import 'package:reseller/src/modules/ingredients/domain/entities/ingredient.dart';
 import 'package:reseller/src/modules/ingredients/domain/repositories/ingredients_repository.dart';
@@ -7,6 +19,9 @@ import 'package:uuid/uuid.dart';
 ///
 /// Uses in-memory Map for storage with mock data.
 /// For production, create implementations like IngredientsRepositoryLocal, IngredientsRepositoryRemote, etc.
+@Deprecated(
+  'Use IngredientsRepositoryImpl + IngredientsLocalDataSourceImpl instead',
+)
 class IngredientsRepositoryMock implements IngredientsRepository {
   final Map<String, Ingredient> _ingredients = {...INGREDIENTS_MOCK};
 
@@ -32,5 +47,10 @@ class IngredientsRepositoryMock implements IngredientsRepository {
   @override
   Future<void> delete(String id) async {
     _ingredients.remove(id);
+  }
+
+  @override
+  Future<int> count() async {
+    return _ingredients.length;
   }
 }

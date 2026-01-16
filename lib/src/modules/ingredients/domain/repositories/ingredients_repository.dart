@@ -16,4 +16,7 @@ abstract class IngredientsRepository {
 
   /// Delete ingredient by ID
   Future<void> delete(String id);
+
+  /// Get total count of ingredients
+  Future<int> count();
 }

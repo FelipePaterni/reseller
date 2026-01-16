@@ -37,15 +37,17 @@ class IngredientList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
     return SafeArea(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.end,
-          spacing: 16,
+          spacing: 12,
           children: [
-            ElevatedButton.icon(
+            FilledButton.icon(
               onPressed: () => _openModal(context, Ingredient.empty()),
               icon: const Icon(Icons.add),
               label: const Text("Novo Ingrediente"),
@@ -53,7 +55,18 @@ class IngredientList extends StatelessWidget {
             Expanded(
               child: Consumer<IngredientsProvider>(
                 builder: (context, provider, _) {
-                  final ingredientsList = provider.getAll;
+                  final ingredientsList = provider.all;
+                  if (ingredientsList.isEmpty) {
+                    return Center(
+                      child: Text(
+                        'Nenhum ingrediente encontrado.\nClique em "Novo Ingrediente" para adicionar um.',
+                        textAlign: TextAlign.center,
+                        style: textTheme.bodyMedium?.copyWith(
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        ),
+                      ),
+                    );
+                  }
                   return ListView.builder(
                     itemCount: ingredientsList.length,
                     itemBuilder: (context, index) {

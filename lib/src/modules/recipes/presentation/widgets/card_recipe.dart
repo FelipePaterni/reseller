@@ -38,6 +38,9 @@ class CardRecipe extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final textTheme = theme.textTheme;
+
     return Card(
       child: InkWell(
         onTap: () => onTap?.call(),
@@ -48,11 +51,29 @@ class CardRecipe extends StatelessWidget {
             mainAxisSize: MainAxisSize.max,
             children: [
               _buildLeadingWidget(context),
-              Text(
-                recipe.name,
-                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  color: Theme.of(context).colorScheme.primary,
-                  fontWeight: FontWeight.bold,
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  spacing: 4,
+                  children: [
+                    Text(
+                      recipe.name,
+                      style: textTheme.titleMedium?.copyWith(
+                        color: theme.colorScheme.primary,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    if (recipe.items.isNotEmpty)
+                      Text(
+                        '${recipe.items.length} ingredientes',
+                        style: textTheme.labelSmall?.copyWith(
+                          color: theme.colorScheme.onSurfaceVariant,
+                        ),
+                      ),
+                  ],
                 ),
               ),
             ],

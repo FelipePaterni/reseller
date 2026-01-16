@@ -20,34 +20,48 @@ class CardIngredients extends StatelessWidget {
     final textTheme = theme.textTheme;
 
     return Card(
-      elevation: 2,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           mainAxisSize: MainAxisSize.min,
+          spacing: 12,
           children: [
             // Header with title and edit icon
             Row(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Text(
-                  ingredient.name,
-                  style: textTheme.titleLarge?.copyWith(
-                    color: colorScheme.primary,
-                    fontWeight: FontWeight.bold,
+                Expanded(
+                  child: Text(
+                    ingredient.name,
+                    style: textTheme.titleMedium?.copyWith(
+                      color: colorScheme.primary,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
-                const Spacer(),
+                const SizedBox(width: 8),
                 IconButton(
                   onPressed: onEdit,
                   icon: Icon(Icons.edit, size: 20, color: colorScheme.primary),
+                  visualDensity: VisualDensity.compact,
+                  constraints: const BoxConstraints(
+                    minWidth: 40,
+                    minHeight: 40,
+                  ),
                 ),
                 IconButton(
                   onPressed: onDelete,
                   icon: Icon(Icons.delete, size: 20, color: colorScheme.error),
+                  visualDensity: VisualDensity.compact,
+                  constraints: const BoxConstraints(
+                    minWidth: 40,
+                    minHeight: 40,
+                  ),
                 ),
               ],
             ),
@@ -56,26 +70,27 @@ class CardIngredients extends StatelessWidget {
             Row(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              spacing: 8,
               children: [
                 Chip(
-                  padding: const EdgeInsets.all(0),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 4,
+                  ),
                   label: Text(
                     'Qtd: ${ingredient.quantity} ${ingredient.unitLabel}',
-                    style: textTheme.labelMedium?.copyWith(
+                    style: textTheme.labelSmall?.copyWith(
                       color: colorScheme.onSurface,
-                    ),
-                    textHeightBehavior: const TextHeightBehavior(
-                      applyHeightToFirstAscent: false,
-                      applyHeightToLastDescent: false,
                     ),
                   ),
                 ),
                 Text(
                   'CUSTO POR UNIDADE',
-                  style: textTheme.labelMedium?.copyWith(
+                  style: textTheme.labelSmall?.copyWith(
                     color: colorScheme.onSurfaceVariant,
-                    letterSpacing: 0.7,
+                    fontSize: 10,
+                    letterSpacing: 0.5,
                   ),
                 ),
               ],
@@ -85,29 +100,29 @@ class CardIngredients extends StatelessWidget {
             Row(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  'Total: R\$ ${ingredient.totalCost}',
-                  style: textTheme.bodyMedium?.copyWith(
-                    color: colorScheme.onSurface,
+                  'Total: R\$ ${ingredient.totalCost.toStringAsFixed(2)}',
+                  style: textTheme.bodySmall?.copyWith(
+                    color: colorScheme.onSurfaceVariant,
                   ),
                 ),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.baseline,
                   textBaseline: TextBaseline.alphabetic,
+                  spacing: 2,
                   children: [
                     Text(
-                      'R\$ ${ingredient.costPerUnit}',
-                      style: textTheme.titleMedium?.copyWith(
+                      'R\$ ${ingredient.costPerUnit.toStringAsFixed(2)}',
+                      style: textTheme.bodyMedium?.copyWith(
                         color: colorScheme.primary,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
-                    const SizedBox(width: 4),
                     Text(
-                      '/ ${ingredient.unitLabel}',
-                      style: textTheme.bodyMedium?.copyWith(
+                      '/${ingredient.unitLabel}',
+                      style: textTheme.labelSmall?.copyWith(
                         color: colorScheme.onSurfaceVariant,
                       ),
                     ),

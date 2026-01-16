@@ -4,9 +4,11 @@ import 'package:reseller/src/app/router/app_router.dart';
 import 'package:reseller/src/app/router/routes.dart';
 import 'package:reseller/src/core/constants/app_constants.dart';
 import 'package:reseller/src/core/theme/app_theme.dart';
-import 'package:reseller/src/modules/ingredients/data/repositories/ingredients_repository_mock.dart';
+import 'package:reseller/src/modules/ingredients/data/datasource/ingredients_local_datasource_impl.dart';
+import 'package:reseller/src/modules/ingredients/data/repositories/ingredients_repository_impl.dart';
 import 'package:reseller/src/modules/ingredients/presentation/provider/ingredients_provider.dart';
-import 'package:reseller/src/modules/recipes/data/repositories/recipes_repository_mock.dart';
+import 'package:reseller/src/modules/recipes/data/datasource/recipes_local_datasource_impl.dart';
+import 'package:reseller/src/modules/recipes/data/repositories/recipes_repository_impl.dart';
 import 'package:reseller/src/modules/recipes/presentation/provider/recipes_provider.dart';
 
 class AppWidget extends StatelessWidget {
@@ -17,11 +19,25 @@ class AppWidget extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (ctx) => IngredientsProvider(IngredientsRepositoryMock()),
+          create: (ctx) {
+            // Ingredients: DataSource → Repository → Provider
+            final ingredientsDataSource = IngredientsLocalDataSourceImpl();
+            final ingredientsRepository = IngredientsRepositoryImpl(
+              dataSource: ingredientsDataSource,
+            );
+            final provider = IngredientsProvider(ingredientsRepository);
+            provider.load();
+            return provider;
+          },
         ),
         ChangeNotifierProvider(
           create: (ctx) {
-            final provider = RecipesProvider(RecipesRepositoryMock());
+            // Recipes: DataSource → Repository → Provider
+            final recipesDataSource = RecipesLocalDataSourceImpl();
+            final recipesRepository = RecipesRepositoryImpl(
+              dataSource: recipesDataSource,
+            );
+            final provider = RecipesProvider(recipesRepository);
             provider.load();
             return provider;
           },

@@ -23,15 +23,18 @@ class RecipeList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
     return SafeArea(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.end,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          spacing: 12,
           children: [
-            ElevatedButton.icon(
+            FilledButton.icon(
               onPressed: () => _openModal(context),
               icon: const Icon(Icons.add),
               label: const Text("Nova receita"),
@@ -44,7 +47,11 @@ class RecipeList extends StatelessWidget {
                           child: Text(
                             'Nenhuma receita encontrada.\nClique em "Nova receita" para adicionar uma.',
                             textAlign: TextAlign.center,
-                            style: Theme.of(context).textTheme.bodyMedium,
+                            style: textTheme.bodyMedium?.copyWith(
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.onSurfaceVariant,
+                            ),
                           ),
                         )
                       : ListView.builder(

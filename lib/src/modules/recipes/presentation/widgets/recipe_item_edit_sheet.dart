@@ -38,7 +38,7 @@ class _RecipeItemEditSheetState extends State<RecipeItemEditSheet> {
       _selectedIngredient = widget.recipeItem!.ingredient;
       _quantity = widget.recipeItem!.quantity;
     } else {
-      _selectedIngredient = context.read<IngredientsProvider>().getAll.first;
+      _selectedIngredient = context.read<IngredientsProvider>().all.first;
       _quantity = 1.0;
     }
   }
@@ -46,7 +46,7 @@ class _RecipeItemEditSheetState extends State<RecipeItemEditSheet> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final allIngredients = context.read<IngredientsProvider>().getAll;
+    final allIngredients = context.read<IngredientsProvider>().all;
 
     // Get IDs of ingredients already in the recipe (excluding current one if editing)
     final usedIngredientIds = widget.currentItems
@@ -115,7 +115,7 @@ class _RecipeItemEditSheetState extends State<RecipeItemEditSheet> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    final allIngredients = context.watch<IngredientsProvider>().getAll;
+    final allIngredients = context.watch<IngredientsProvider>().all;
 
     // Get IDs of ingredients already in the recipe (excluding current one if editing)
     final usedIngredientIds = widget.currentItems

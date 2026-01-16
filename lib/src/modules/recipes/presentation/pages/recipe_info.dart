@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:reseller/src/core/theme/app_colors.dart';
-import 'package:reseller/src/modules/recipes/domain/entities/recipe.dart';
 import 'package:reseller/src/modules/recipes/presentation/provider/recipes_provider.dart';
 import 'package:reseller/src/modules/recipes/presentation/widgets/table_tab.dart';
 import 'package:reseller/src/modules/recipes/presentation/widgets/top_image.dart';
@@ -39,20 +38,18 @@ class _RecipeInfoState extends State<RecipeInfo>
       isScrollControlled: true,
       builder: (context) => RecipeItemEditSheet(
         recipeId: widget.recipeId,
-        currentItems: context
-            .read<RecipesProvider>()
-            .getById(widget.recipeId)
-            .items,
+        currentItems:
+            context.read<RecipesProvider>().getById(widget.recipeId)?.items ??
+            [],
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    final Recipe recipe;
-    try {
-      recipe = context.watch<RecipesProvider>().getById(widget.recipeId);
-    } catch (e) {
+    final recipe = context.watch<RecipesProvider>().getById(widget.recipeId);
+
+    if (recipe == null) {
       return Scaffold(
         appBar: AppBar(title: const Text("Receita não encontrada")),
         body: const Center(
@@ -94,8 +91,8 @@ class _RecipeInfoState extends State<RecipeInfo>
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     colors: [
-                      const Color.fromARGB(0, 0, 0, 0),
-                      Theme.of(context).shadowColor,
+                      Theme.of(context).colorScheme.scrim.withAlpha(0),
+                      Theme.of(context).colorScheme.scrim,
                     ],
                     stops: const [0.3, 0.7],
                   ),
@@ -107,19 +104,21 @@ class _RecipeInfoState extends State<RecipeInfo>
                       preferredSize: const Size.fromHeight(40),
                       child: Container(
                         height: 40,
-                        margin: const EdgeInsets.symmetric(horizontal: 20),
-                        decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(19)),
-                          color: AppColors.surfaceVariant,
+                        margin: const EdgeInsets.symmetric(horizontal: 24),
+                        decoration: BoxDecoration(
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(20),
+                          ),
+                          color: Theme.of(context).colorScheme.surfaceContainer,
                         ),
                         child: TabBar(
                           controller: _tabController,
                           padding: const EdgeInsets.all(6),
                           indicatorSize: TabBarIndicatorSize.tab,
                           indicator: BoxDecoration(
-                            color: AppColors.surface,
+                            color: Theme.of(context).colorScheme.surface,
                             borderRadius: const BorderRadius.all(
-                              Radius.circular(13),
+                              Radius.circular(14),
                             ),
                           ),
                           dividerColor: Colors.transparent,
@@ -135,7 +134,7 @@ class _RecipeInfoState extends State<RecipeInfo>
                     ),
                     Expanded(
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
                         child: TabBarView(
                           controller: _tabController,
                           children: [

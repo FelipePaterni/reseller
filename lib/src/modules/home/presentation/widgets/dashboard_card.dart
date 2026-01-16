@@ -21,31 +21,48 @@ class DashboardCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final textTheme = theme.textTheme;
+
     return StaggeredGridTile.fit(
       crossAxisCellCount: crossAxisCellCount,
       child: Card(
         child: InkWell(
           onTap: onClick,
           child: Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              spacing: 16,
               children: [
                 Row(
-                  children: [Icon(icon), const SizedBox(width: 8), Text(title)],
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: colorScheme.primary.withAlpha(25),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Icon(icon, color: colorScheme.primary, size: 24),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Text(
+                        title,
+                        style: textTheme.titleSmall?.copyWith(
+                          color: colorScheme.onSurface,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-                /* const SizedBox(height: 8),
-                Text(
-                  subtitle,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Theme.of(context).colorScheme.onSurfaceVariant,
-                  ),
-                ),*/
-                const SizedBox(height: 12),
                 Text(
                   value,
-                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    color: Theme.of(context).colorScheme.primary,
+                  style: textTheme.displaySmall?.copyWith(
+                    color: colorScheme.primary,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
