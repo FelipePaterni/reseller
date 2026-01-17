@@ -61,6 +61,10 @@ class IngredientsLocalDataSourceImpl implements IngredientsDataSource {
   @override
   Future<void> delete(String id) async {
     await Future.delayed(const Duration(milliseconds: 50));
+
+    if (!_ingredients.containsKey(id)) {
+      throw Exception('Ingredient with id $id not found');
+    }
     _ingredients.remove(id);
   }
 

@@ -31,14 +31,14 @@ class Home extends StatelessWidget {
               crossAxisSpacing: 16,
               children: [
                 DashboardCard(
-                  crossAxisCellCount: 1,
+                  crossAxisCellCount: 2,
                   icon: Icons.book,
                   title: "Receitas",
                   subtitle: "Total de receitas:",
                   value: context.watch<RecipesProvider>().count.toString(),
                 ),
                 DashboardCard(
-                  crossAxisCellCount: 1,
+                  crossAxisCellCount: 2,
                   icon: Icons.kitchen,
                   title: "Ingredientes",
                   subtitle: "Total",
