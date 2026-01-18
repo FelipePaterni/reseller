@@ -4,8 +4,8 @@
 
 > Flutter application to assist small food producers in managing recipes, ingredients, and cost calculations.
 
-[![Flutter](https://img.shields.io/badge/Flutter-3.10.4+-blue.svg?style=for-the-badge&logo=flutter)](https://flutter.dev/)
-[![Dart](https://img.shields.io/badge/Dart-3.10.4+-blue.svg?style=for-the-badge&logo=dart)](https://dart.dev/)
+[![Flutter](https://img.shields.io/badge/Flutter-stable-blue.svg?style=for-the-badge&logo=flutter)](https://flutter.dev/)
+[![Dart](https://img.shields.io/badge/Dart-stable-blue.svg?style=for-the-badge&logo=dart)](https://dart.dev/)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)](LICENSE)
 
 ## Project Overview

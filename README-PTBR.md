@@ -65,7 +65,7 @@ lib/
 - Dart SDK 3.10.4 ou superior
 - Android Studio / VS Code (recomendado)
 
-### Installation
+### Instalação
 
 ```bash
 # Clone o repositório
