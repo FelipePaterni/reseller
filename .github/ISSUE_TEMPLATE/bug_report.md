@@ -43,6 +43,8 @@ assignees: ''
 - Dart version: [e.g., 3.10.4]
 - IDE: [e.g., VS Code 1.85.0, Android Studio]
 
+> Labeling: This template auto-applies the `bug` label. Add additional labels if helpful (e.g., `performance`, `design`).
+
 ## Additional Context
 
 <!-- Add any other context about the problem here -->

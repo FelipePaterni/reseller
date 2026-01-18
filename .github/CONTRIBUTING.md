@@ -251,6 +251,25 @@ import '../widgets/custom_card.dart';
    - Reference related issues (#123)
    - Screenshots if there are visual changes
 
+   ## 🏷️ Labels
+
+   Consistent labeling helps triage, search, and automation. Always add the most accurate labels to Issues and PRs:
+
+   - **bug**: reproducible defect or regression
+   - **enhancement**: new feature or functional improvement
+   - **documentation**: docs-only changes (README, guides, comments)
+   - **refactor**: code restructuring without behavior change
+   - **performance**: optimizations impacting speed or memory
+   - **test**: adds or modifies tests
+   - **design**: visual/UX changes (layouts, colors, spacing)
+   - **question**: support or clarification request
+   - **chore**: maintenance tasks (dependencies, CI, tooling)
+   Labeling rules:
+   - Add at least one label before submitting an Issue/PR.
+   - Prefer the most specific label; avoid over-labeling.
+   - Maintainers may adjust labels for consistency.
+   - Use `duplicate`, `invalid`, or `wontfix` during triage when applicable.
+
 ### Pull Request Template
 
 ```markdown

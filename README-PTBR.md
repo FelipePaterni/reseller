@@ -15,7 +15,13 @@ O **Reseller** é uma ferramenta desenvolvida para pequenos empreendedores do ra
 * Calcular o custo de produção de receitas
 * Gerenciar ingredientes e seus custos
 * Determinar preços de venda com base em custos reais
-* Controlar a margem de lucro de cada produto,
+* Controlar a margem de lucro de cada produto
+
+## Código de Conduta
+
+Este projeto segue um Código de Conduta.
+Ao participar, você concorda em manter este padrão.
+Veja [.github/CODE_OF_CONDUCT.md](.github/CODE_OF_CONDUCT.md).
 
 ##  Funcionalidades
 ### Implementadas:
@@ -62,7 +68,7 @@ lib/
 ### Installation
 
 ```bash
-# Clone the repository
+# Clone o repositório
 git clone https://github.com/FelipePaterni/reseller.git
 
 # Entre no diretório
@@ -108,6 +114,10 @@ Contribuições são bem-vindas! Por favor:
 3. Commit suas mudanças (`git commit -m 'Adiciona MinhaFeature'`)
 4. Push para a branch (`git push origin feature/MinhaFeature`)
 5. Abra um Pull Request
+
+## Segurança
+
+Para reportar vulnerabilidades, consulte [.github/SECURITY.md](.github/SECURITY.md).
 
 ##  Licença
 

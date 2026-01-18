@@ -86,7 +86,7 @@ flutter run
 - **uuid** ^4.5.2 - Unique ID generation
 - **image_picker** ^1.0.7 - Image selection
 - **flutter_slidable** ^4.0.3 - Sliding actions in lists
-- **lucid_validation**^1.3.1 - Form validation
+- **lucid_validation** ^1.3.1 - Form validation
 - **sqflite** ^2.4.2 - Local SQLite database
 - **path** ^1.9.1 - File path manipulation
 - **flutter_staggered_grid_view** ^0.7.0 - Grid layouts
@@ -110,6 +110,10 @@ Contributions are welcome! Please:
 3. Commit your changes (`git commit -m 'Add MyFeature'`)
 4. Push to the branch (`git push origin feature/MyFeature`)
 5. Open a Pull Request
+
+## Security
+
+To report vulnerabilities, please see [.github/SECURITY.md](.github/SECURITY.md).
 
 ## License
 

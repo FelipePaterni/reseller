@@ -33,3 +33,5 @@ assignees: ''
 ## Additional Context
 
 <!-- Add any other context, code snippets, or screenshots -->
+
+> Labeling: This template auto-applies the `question` label. Maintainers may re-label to `bug` or `enhancement` if appropriate.

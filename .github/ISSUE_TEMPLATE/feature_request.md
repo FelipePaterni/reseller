@@ -59,3 +59,5 @@ assignees: ''
 - [ ] High - Significantly improves user experience
 - [ ] Medium - Nice to have enhancement
 - [ ] Low - Minor improvement
+
+> Labeling: This template auto-applies the `enhancement` label. Add additional labels if helpful (e.g., `design`, `performance`).

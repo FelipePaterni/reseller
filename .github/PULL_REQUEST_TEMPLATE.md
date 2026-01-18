@@ -14,6 +14,11 @@
 - [ ] Performance improvement
 - [ ] Test addition/update
 
+## Labels
+
+<!-- Add appropriate labels to this PR (choose at least one) -->
+- bug | enhancement | documentation | refactor | performance | test | design | chore | question
+
 ## Related Issue
 
 <!-- Link the related issue. Use "Closes #123" to auto-close the issue when merged -->
@@ -59,6 +64,7 @@ Closes #
 - [ ] I have added comments to complex code sections
 - [ ] My changes generate no new warnings
 - [ ] Any dependent changes have been merged and published
+- [ ] I added appropriate labels to this PR
 
 ## Additional Notes
 
