@@ -16,6 +16,12 @@ The **Reseller** is a tool developed for small entrepreneurs in the food sector 
 * Determine selling prices based on actual costs
 * Control the profit margin of each product
 
+## Code of Conduct
+
+This project follows a Code of Conduct.
+By participating, you agree to uphold this standard.
+See [CODE_OF_CONDUCT.md](.github/CODE_OF_CONDUCT.md).
+
 ## Features
 ### Implemented:
 * Ingredient management (full CRUD)
